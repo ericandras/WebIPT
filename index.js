@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 
 app.use(express.static('public'))
 
-http.listen(process.env.PORT || 3000, () => {
+http.listen(process.env.PORT || 2000, () => {
     console.log('listening on port: 3000');
     console.log(" "+ new Date);
 })
