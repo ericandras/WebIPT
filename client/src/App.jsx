@@ -1,5 +1,6 @@
 import "./App.css";
 import { useEffect, useState } from "react";
+import Main from './components/main'
 import io from "socket.io-client";
 const socket = io.connect("http://localhost:4000");
 
@@ -17,17 +18,27 @@ function App() {
   }, [socket]);
 
   return (
-    <div className="App">
-      <input
-        placeholder="Message"
-        onChange={(e) => {
-          setMessage(e.target.value);
-        }}
-      />
-      <button onClick={sendMessage}>Send message</button>
-      <h1>
-        Message: {messageReceived.map(e => <div>{e}</div>)}</h1>
+    <>
+      <h1>Teste darkmode</h1>
+
+<div className="App">
+<input
+  placeholder="Message"
+  onChange={(e) => {
+    setMessage(e.target.value);
+  }}
+/>
+<button onClick={sendMessage}>Send message</button>
+<h1>
+  Message: {messageReceived.map(e => <div>{e}</div>)}</h1>
+</div>
+<div className='bg'>
+    
+      <Main> </Main>
     </div>
+</>
+    
+   
   );
 }
 
