@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Josefin Sans", sans-serif;
 }
 h1{
   color: var(--font-color);
@@ -9,8 +10,8 @@ h1{
 }
 .bg{
   display: flex;
-  flex-direction: column;
   background-color: var(--bg-color);
+  gap: 100px;
   transition: .3s;
   width: 100%;
   height: 100vh;

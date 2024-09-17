@@ -1,6 +1,8 @@
 :root {
   color-scheme: light dark;
-  --font-color: light-dark(#4e2ecf,#ffffff );
+  --font-color: light-dark(#1c1d3f,#ffffff );
   --bg-color: light-dark(#fff,#1c1d3f);
+  --font-color: light-dark(#1c1d3f,#fff);
+  --main-bg-color: light-dark(#afc5ff,#11142e);
 }
 

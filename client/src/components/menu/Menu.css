@@ -1,0 +1,26 @@
+nav{
+    margin-left: 50px;
+}
+
+.link{
+    width: 150px;
+    list-style: none;
+    font-size: 24px;
+    border-top: var(--font-color) solid 1px;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .3s;
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--font-color);
+}
+.last{
+    border-bottom:var(--font-color) solid 1px;
+}
+.link:hover{
+    background-color:var(--font-color);
+    color: var(--bg-color);
+    transition: .3s;
+}
