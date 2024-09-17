@@ -7,6 +7,6 @@
   --font-color: light-dark(#6183c2,#fff);
   --main-bg-color: light-dark(#6188c269,#11142e);
   --shadow-color :light-dark( #00000059,#68686859);
-  --menu-shadow: light-dark(#001aff,#0099ff);
+  --menu-shadow: light-dark(#001aff,#0099ffa2);
 }
 
