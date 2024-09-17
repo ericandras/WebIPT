@@ -24,3 +24,8 @@ nav{
     color: var(--bg-color);
     transition: .3s;
 }
+.active{
+    background-color:var(--font-color);
+    color: var(--bg-color);
+    transition: .3s;
+}
