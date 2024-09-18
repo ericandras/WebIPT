@@ -33,8 +33,7 @@ function App() {
   Message: {messageReceived.map(e => <div>{e}</div>)}</h1>
 </div>
 <div className='bg'>
-    
-      <Main> </Main>
+  
     </div>
 </>
     
