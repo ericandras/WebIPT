@@ -23,14 +23,14 @@ const io = new Server(server, {
     const oxe = data.toString()
       console.log('ok ok rodou')
       // (/\d{2}\/\d{2}\/\d{2}/)
-      // messages = data.toString()
+      messages = data.toString().split('')
   });
   
   io.on("connection", (socket) => {
     console.log(`a user connected o ${socket.id}`);
     socket.emit("receive_message", messages);
 
-    utilidade.utilidade(socket, messages)
+    // utilidade.utilidade(socket, messages)
     
     socket.on("send_message", (data) => {
         // messages.push(data.message)
