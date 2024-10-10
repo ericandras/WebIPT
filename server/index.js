@@ -25,7 +25,7 @@ const io = new Server(server, {
     socket.emit("receive_message", messages);
 
     // utilidade.utilidade(socket, messages)
-    const start = proc.spawn("ls",{cwd: "../",shell: true})
+    const start = proc.spawn("iptables -t raw -L",{cwd: "../",shell: true})
     start.stdout.on('data', (data) => {
       const oxe = data.toString()
         console.log('ok ok rodou')
