@@ -23,7 +23,7 @@ const io = new Server(server, {
     const oxe = data.toString()
       console.log('ok ok rodou')
       // (/\d{2}\/\d{2}\/\d{2}/)
-      messages = data.toString().split('')
+      messages = data.toString().split('\n')
   });
   
   io.on("connection", (socket) => {
