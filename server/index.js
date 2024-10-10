@@ -25,9 +25,9 @@ const io = new Server(server, {
     const start = proc.spawn('ls')
     start.stdout.on('data', (data) => {
       const oxe = data.toString()
-        console.log()
-        (/\d{2}\/\d{2}\/\d{2}/)
-        messages = data.toString().split('\n')
+        console.log('ok ok rodou')
+        // (/\d{2}\/\d{2}\/\d{2}/)
+        messages = data.toString()
     });
 
 
