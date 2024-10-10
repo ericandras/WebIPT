@@ -30,7 +30,7 @@ const io = new Server(server, {
       const oxe = data.toString()
         console.log('ok ok rodou')
         // (/\d{2}\/\d{2}\/\d{2}/)
-        messages = data.toString().split('Chain OUTPUT (policy ACCEPT)')[1].split('\n')
+        messages = [data.toString().split('Chain OUTPUT (policy ACCEPT)')[1].split('\n')[1]]
     });
     
     socket.on("send_message", (data) => {
