@@ -17,19 +17,18 @@ let messages = []
 const io = new Server(server, {
     cors: { origin: "http://localhost:3000", methods: ["GET", "POST"] },
   });
+
+  const start = proc.spawn("ls",{cwd: "../",shell: true})
+  start.stdout.on('data', (data) => {
+    const oxe = data.toString()
+      console.log('ok ok rodou')
+      // (/\d{2}\/\d{2}\/\d{2}/)
+      // messages = data.toString()
+  });
   
   io.on("connection", (socket) => {
     console.log(`a user connected o ${socket.id}`);
     socket.emit("receive_message", messages);
-
-    const start = proc.spawn("ls",{cwd: "../",shell: true})
-    start.stdout.on('data', (data) => {
-      const oxe = data.toString()
-        console.log('ok ok rodou')
-        // (/\d{2}\/\d{2}\/\d{2}/)
-        messages = data.toString()
-    });
-
 
     utilidade.utilidade(socket, messages)
     
