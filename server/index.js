@@ -4,26 +4,37 @@ import path from "path";
 import { fileURLToPath } from 'url';
 import { Server } from "socket.io";
 import utilidade from './src/utilidade.js'
+import * as proc from 'child_process'
 
 const app = express()
 const server = ht.createServer(app);
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename);
 
-const messages = []
+let messages = []
+
 
 const io = new Server(server, {
-    cors: { origin: "http://localhost:3000", methods: ["GET", "POST"] },
+    cors: { origin: "*", methods: ["GET", "POST"] },
   });
+
+
   
   io.on("connection", (socket) => {
     console.log(`a user connected o ${socket.id}`);
     socket.emit("receive_message", messages);
 
-    utilidade.utilidade(socket, messages)
+    // utilidade.utilidade(socket, messages)
+    const start = proc.spawn("iptables -L",{cwd: "../",shell: true})
+    start.stdout.on('data', (data) => {
+      const oxe = data.toString()
+        console.log('ok ok rodou')
+        // (/\d{2}\/\d{2}\/\d{2}/)
+        messages = [data.toString().split('Chain OUTPUT (policy ACCEPT)\n')[1].split('\n')[1]]
+    });
     
     socket.on("send_message", (data) => {
-        messages.push(data.message)
+        // messages.push(data.message)
         console.log('ok recebi uma mensagem', data.message)
       socket.emit("receive_message", messages);
     });
