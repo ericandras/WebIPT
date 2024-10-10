@@ -22,7 +22,7 @@ const io = new Server(server, {
     console.log(`a user connected o ${socket.id}`);
     socket.emit("receive_message", messages);
 
-    const start = proc.spawn('cmd', ['/c', 'cd ../.. && dir'])
+    const start = proc.spawn('ls')
     start.stdout.on('data', (data) => {
       const oxe = data.toString()
         console.log()
