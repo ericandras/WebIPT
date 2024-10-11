@@ -6,6 +6,9 @@ import { Server } from "socket.io";
 import utilidade from './src/utilidade.js'
 import * as proc from 'child_process'
 
+import 'dotenv/config'
+const socket = io.connect(`http://${process.env.IP}:4000`); 
+
 const app = express()
 const server = ht.createServer(app);
 const __filename = fileURLToPath(import.meta.url)
@@ -15,7 +18,7 @@ let messages = []
 
 
 const io = new Server(server, {
-    cors: { origin: "*", methods: ["GET", "POST"] },
+    cors: { origin: `http://${process.env.IP}:3000`, methods: ["GET", "POST"] },
   });
 
 
@@ -41,5 +44,5 @@ const io = new Server(server, {
   });
 
   server.listen(4000, () => {
-    console.log("listening on *:4000");
+    console.log(`listening on http://${process.env.IP}:4000`);
   });
