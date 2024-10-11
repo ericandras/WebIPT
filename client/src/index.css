@@ -1,6 +1,12 @@
 :root {
   color-scheme: light dark;
-  --font-color: light-dark(#4e2ecf,#ffffff );
-  --bg-color: light-dark(#fff,#151530);
+  --font-color-main: light-dark(#1c1d3f,#ffffff );
+  --font-hover: light-dark(#fff, #1c1d3f );
+  --bg-hover: light-dark(#6183c2,#ffffffde );
+  --bg-color: light-dark(rgb(229, 247, 255),#1c1d3f);
+  --font-color: light-dark(#6183c2,#fff);
+  --main-bg-color: light-dark(#6188c269,#11142e);
+  --shadow-color :light-dark( #00000059,#68686859);
+  --menu-shadow: light-dark(#001aff,#0099ffa2);
 }
 

@@ -1,0 +1,32 @@
+nav{
+    margin-left: 50px;
+}
+
+.link{
+    width: 150px;
+    list-style: none;
+    font-size: 24px;
+    margin: 20px 0;
+    border-radius: 5px;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .3s;
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--font-color);
+    box-shadow: var(--shadow-color) 0px 5px 15px;
+}
+
+.link:hover{
+    background-color:var(--bg-hover);
+    color: var(--font-hover);
+    transition: .3s;
+}
+.active{
+    background-color:var(--bg-hover);
+    color: var(--bg-color);
+    box-shadow: var(--menu-shadow) 0px 0px 25px;
+    transition: .3s;
+}
