@@ -7,7 +7,6 @@ import utilidade from './src/utilidade.js'
 import * as proc from 'child_process'
 
 import 'dotenv/config'
-const socket = io.connect(`http://${process.env.IP}:4000`); 
 
 const app = express()
 const server = ht.createServer(app);
@@ -20,7 +19,6 @@ let messages = []
 const io = new Server(server, {
     cors: { origin: `http://${process.env.IP}:3000`, methods: ["GET", "POST"] },
   });
-
 
   
   io.on("connection", (socket) => {

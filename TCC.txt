@@ -1,0 +1,56 @@
+EX: Adicionar uma regra para bloquear tráfego de saída:
+
+iptables -A OUTPUT -o eth0 -p udp --dport 53 -j DROP
+
+Neste exemplo, estamos adicionando uma regra à cadeia de saída (OUTPUT) que bloqueia tráfego UDP na porta 53 (porta padrão do DNS) na interface de rede “eth0” (interface de rede de saída) e direcionando-o para a ação “DROP”, que descarta o pacote.
+
+    -A: Adiciona a regra à cadeia especificada.
+    -o: Especifica a interface de rede de saída para onde o tráfego está sendo enviado.
+    -p: Especifica o protocolo do pacote (neste caso, UDP).
+    --dport: Especifica a porta de destino do pacote.
+    -j: Indica a ação a ser tomada se a regra for correspondida (neste caso, DROP).
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+IDEIA PARA MOSTRAR COMO ESTÁ AS CONFIGURAÇÕES
+1. Salvando as regras: Para salvar as regras do iptables, você precisa usar o comando iptables-save. Este comando exibe as regras do iptables em um formato legível por máquina, permitindo que você redirecione a saída para um arquivo.
+
+Passo a passo:
+
+    Abra o terminal ou a linha de comando no seu sistema.
+    Use o comando iptables-save para exibir as regras atuais do iptables no seu terminal.
+    Redirecione a saída para um arquivo de texto. Por exemplo, para salvar as regras em um arquivo chamado regras-iptables.txt, você pode usar o seguinte comando:
+
+iptables-save > regras-iptables.txt
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+IDEIA PARA LISTAR AS CONFIGURAÇÕES E LISTA-LAS PARA ESCOLHER QUAL BACKUP FAZER (SALVAR AS REGRAS EM UM DIRETÓRIO SEGURO E, QUANDO FIZER A BUSCA NA APLICAÇÃO, ENTRAR NO MESMO E LISTAR AS CONFIGURAÇÕES)
+2. Restaurando as regras: Após salvar as regras em um arquivo, você pode restaurá-las a qualquer momento usando o utilitário iptables-restore. Esse comando lerá o arquivo de texto contendo as regras salvas e as aplicará no iptables.
+
+Passo a passo:
+
+    Verifique se você tem um arquivo contendo as regras salvas. No nosso exemplo, o arquivo é regras-iptables.txt.
+    Abra o terminal ou a linha de comando no seu sistema.
+    Use o comando iptables-restore e especifique o arquivo contendo as regras para restaurá-las:
+
+iptables-restore < regras-iptables.txt
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+IDEIAS PARA EXIBIÇÃO DE REGRAS:
+iptables -t (tabela) --line-numbers (mostrar número da regra)
+
+
+
+
+
+
+
+
+
+
+
+
+
+SITE: https://www.hostgator.com.br/blog/guia-iptables/
+https://linux.die.net/man/8/iptables
