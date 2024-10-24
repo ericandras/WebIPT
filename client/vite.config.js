@@ -5,7 +5,7 @@ import 'dotenv/config'
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: process.env.IP,
+    host: import.meta.env.IP,
     port: 3000
   }
 })
