@@ -1,8 +1,7 @@
 import {useState, useEffect} from 'react'
 import io from "socket.io-client";
-import 'dotenv/config'
-const socket = io.connect(`http://${process.env.IP}:4000`); 
-
+const socket = io.connect(`http://${import.meta.env.VITE_IP}:4000`); 
+// console.log('variable', import.meta.env.VITE_IP)
 function Nat() {
   const [message, setMessage] = useState("");
   const [messageReceived, setMessageReceived] = useState([]);
