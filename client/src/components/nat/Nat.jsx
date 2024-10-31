@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import io from "socket.io-client";
+console.log(`http://${import.meta.env.VITE_IP}:4000`)
 const socket = io.connect(`http://${import.meta.env.VITE_IP}:4000`); 
 // console.log('variable', import.meta.env.VITE_IP)
 function Nat() {
@@ -7,11 +8,11 @@ function Nat() {
   const [messageReceived, setMessageReceived] = useState([]);
   function sendMessage() {
     console.log("Button clicked");
-    socket.emit("send_message", { message: message });
+    socket.emit("input_command", { command: message });
   }
   useEffect(() => {
-    socket.on("receive_message", (data) => {
-      setMessageReceived(data);
+    socket.on("output_command", (data) => {
+      setMessageReceived(data.lines);
     });
   }, [socket]);
   return (

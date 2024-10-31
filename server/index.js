@@ -38,6 +38,6 @@ const io = new Server(server, {
     });
   });
 
-  server.listen(4000, () => {
+  server.listen(4000, process.env.IP, () => {
     console.log(`listening on http://${process.env.IP}:4000`);
   });
