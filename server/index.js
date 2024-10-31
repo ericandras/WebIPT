@@ -17,27 +17,24 @@ let messages = []
 
 
 const io = new Server(server, {
-    cors: { origin: `http://${process.env.IP}:3000`, methods: ["GET", "POST"] },
+    // cors: { origin: `http://${process.env.IP}:3000`, methods: ["GET", "POST"] },
+    cors: { origin: '*', methods: ["GET", "POST"] },
   });
 
   
   io.on("connection", (socket) => {
     console.log(`a user connected o ${socket.id}`);
-    socket.emit("receive_message", messages);
-
-    // utilidade.utilidade(socket, messages)
-    const start = proc.spawn("iptables -L",{cwd: "../",shell: true})
-    start.stdout.on('data', (data) => {
-      const oxe = data.toString()
-        console.log('ok ok rodou')
-        // (/\d{2}\/\d{2}\/\d{2}/)
-        messages = [data.toString().split('Chain OUTPUT (policy ACCEPT)\n')[1].split('\n')[1]]
-    });
     
-    socket.on("send_message", (data) => {
-        // messages.push(data.message)
-        console.log('ok recebi uma mensagem', data.message)
-      socket.emit("receive_message", messages);
+    socket.on("input_command", (msg) => {
+        const start = proc.spawn(msg.command,{cwd: `/${msg.path??''}`,shell: true})
+    start.stdout.on('data', (data) => {
+      const output = data.toString().split('\n').filter(line => line.trim() != "")
+      console.log("input:",msg.command)
+      console.log("output:",data.toString())
+      console.log("treated_output:",output)
+      socket.emit("output_command", {lines: output});
+    });
+      
     });
   });
 
