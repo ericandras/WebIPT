@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import './main.css'
 
 import Nat from "../nat/Nat";

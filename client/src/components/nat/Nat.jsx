@@ -1,10 +1,12 @@
 import {useState, useEffect} from 'react'
 import sendMessage from '../../utils/messages';
-import io from "socket.io-client";
-const socket = io.connect(`http://${import.meta.env.VITE_IP_SERVER}:4000`); 
+import { useSocket } from '../../utils/socketContext';
+
 
 // console.log('variable', import.meta.env.VITE_IP)
 function Nat() {
+
+  const socket = useSocket()
   const [message, setMessage] = useState("");
   const [messageReceived, setMessageReceived] = useState([]);
   
