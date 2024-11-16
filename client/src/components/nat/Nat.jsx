@@ -26,9 +26,9 @@ function Nat() {
             setMessage(e.target.value);
           }}
         />
-        <button onClick={() => {sendMessage(message)}}>Send message</button>
+        <button onClick={() => {sendMessage(socket,message)}}>Send message</button>
         <h1>
-          Message: {messageReceived.map(e => <div>{e}</div>)}</h1>
+          Message: {messageReceived.map((e , index )=> <div key={index}>{e}</div>)}</h1>
     </div>
   )
 }
