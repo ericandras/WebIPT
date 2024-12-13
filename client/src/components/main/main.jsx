@@ -17,7 +17,7 @@ function Main({ activeComponent }) {
       case 'Raw':
         return <Raw/>;
       case 'Mangle':
-        return <Mangle/>; 
+        return <Mangle/>;
       case 'Filter':
         return <Filter/>;
       default:

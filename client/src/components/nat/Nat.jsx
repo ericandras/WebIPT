@@ -1,36 +1,80 @@
-import {useState, useEffect} from 'react'
-import sendMessage from '../../utils/messages';
-import { useSocket } from '../../utils/socketContext';
+import { useState, useEffect } from "react";
+import sendMessage from "../../utils/messages";
+import { useSocket } from "../../utils/socketContext";
+import ChangeTableButton from "../changeTableButton/changeTableButton";
 
-
-// console.log('variable', import.meta.env.VITE_IP)
 function Nat() {
-
-  const socket = useSocket()
-  const [message, setMessage] = useState("");
-  const [messageReceived, setMessageReceived] = useState([]);
-  
+  const socket = useSocket();
+  const [rules, setRules] = useState([]);
+  const [table, setTable] = useState()
+  const [tableSelected, setTableSelected] = useState()
   useEffect(() => {
+    if (!table) return;
+
+    sendMessage(socket, table);
+
     socket.on("output_command", (data) => {
-      console.log('osheoshe')
-      setMessageReceived(data.lines);
+      const filteredRules = extractRules(data.lines);
+      setRules(filteredRules);
     });
-  }, [socket]);
-  
+
+    return () => {
+      socket.off("output_command");
+    };
+  }, [socket, table]);
+
+
+  const extractRules = (lines) => {
+    return lines.filter(line => !line.startsWith("Chain") && !line.startsWith("target"));
+  };
+
+  function handleSelect(buttonActive) {
+    setTable(`iptables -t nat -L ${buttonActive.toUpperCase()}`)
+    setTableSelected(buttonActive)
+  }
   return (
-   
     <div>
-      <input
-          placeholder="Message"
-          onChange={(e) => {
-            setMessage(e.target.value);
-          }}
-        />
-        <button onClick={() => {sendMessage(socket,message)}}>Send message</button>
-        <h1>
-          Message: {messageReceived.map((e , index )=> <div key={index}>{e}</div>)}</h1>
+      <h1>Regras NAT</h1>
+      <div  className="conteudo">
+      <menu>
+        <ChangeTableButton isSelected={tableSelected === 'postrouting'} onSelect={() => handleSelect('postrouting')}>Postrouting</ChangeTableButton>
+        <ChangeTableButton isSelected={tableSelected === 'prerouting'} onSelect={() => handleSelect('prerouting')}>Prerouting</ChangeTableButton>
+        <ChangeTableButton isSelected={tableSelected === 'output'} onSelect={() => handleSelect('output')}>Output</ChangeTableButton>
+      
+
+      </menu>
+      <div>
+        <table>
+          <thead>
+            <tr>
+              <th>Target</th>
+              <th>Prot</th>
+              <th>Opt</th>
+              <th>source</th>
+              <th>destination</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            
+            {
+              rules.map((rule, index) => (
+                <tr key={index}>
+                 {rule.trim().split(/\s+/).map(e => <td>{e}</td>)}
+                </tr>
+              ))
+
+            }
+          </tbody>
+        </table>
+
+      </div>
+
+
+      </div>
+
     </div>
-  )
+  );
 }
 
-export default Nat
+export default Nat;
