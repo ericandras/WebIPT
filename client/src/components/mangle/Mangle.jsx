@@ -7,7 +7,7 @@ function Mangle() {
   const socket = useSocket();
   const [rules, setRules] = useState([]);
   const [table, setTable] = useState()
-  const [tableSelected, setTableSelected] = useState()
+  const [tableSelected, setTableSelected] = useState('postrouting')
   useEffect(() => {
     if (!table) return;
 
@@ -45,8 +45,9 @@ function Mangle() {
       </menu>
       <div>
         <table>
-          <thead>
+        <thead>
             <tr>
+              <th>#</th>
               <th>Target</th>
               <th>Prot</th>
               <th>Opt</th>
@@ -60,6 +61,7 @@ function Mangle() {
             {
               rules.map((rule, index) => (
                 <tr key={index}>
+                  <td>{(++index)}</td>
                  {rule.trim().split(/\s+/).map(e => <td>{e}</td>)}
                 </tr>
               ))

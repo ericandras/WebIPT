@@ -8,7 +8,7 @@ function Filter() {
   const socket = useSocket();
   const [rules, setRules] = useState([]);
   const [table, setTable] = useState()
-  const [tableSelected, setTableSelected] = useState()
+  const [tableSelected, setTableSelected] = useState('postrouting')
   useEffect(() => {
     if (!table) return;
 
@@ -33,6 +33,7 @@ function Filter() {
     setTable(`iptables -t filter -L ${buttonActive.toUpperCase()}`)
     setTableSelected(buttonActive)
   }
+  
   return (
     <div>
       <h1>Regras FILTER</h1>
@@ -48,6 +49,7 @@ function Filter() {
         <table>
           <thead>
             <tr>
+              <th>#</th>
               <th>Target</th>
               <th>Prot</th>
               <th>Opt</th>
@@ -61,6 +63,7 @@ function Filter() {
             {
               rules.map((rule, index) => (
                 <tr key={index}>
+                  <td>{(++index)}</td>
                  {rule.trim().split(/\s+/).map(e => <td>{e}</td>)}
                 </tr>
               ))
