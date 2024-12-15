@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import io from "socket.io-client";
-
+import sendMessage from "./messages";
 const SocketContext = createContext();
 
 export const SocketProvider = ({ children }) => {
@@ -14,8 +14,15 @@ export const SocketProvider = ({ children }) => {
     setSocket(socketInstance);
   }, []);
 
+  const emitMessage = (message) => {
+    if (!socket) {
+      console.error("Socket não está conectado.");
+      return;
+    }
+    sendMessage(socket, message); 
+  };
   return (
-    <SocketContext.Provider value={socket}>
+    <SocketContext.Provider value={{socket,emitMessage}}>
       {children}
     </SocketContext.Provider>
   );

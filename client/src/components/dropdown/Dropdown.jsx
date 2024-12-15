@@ -1,9 +1,15 @@
-import React from "react";
-import "./Dropdown.css"; 
 
-const Dropdown = ({ options, value, onChange }) => {
+
+function Dropdown({ options, value, onChange, placeholder = "Selecione uma opção" }) {
   return (
-    <select className="dropdown" value={value} onChange={(e) => onChange(e.target.value)}>
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="dropdown"
+    >
+      <option value="" disabled hidden>
+        {placeholder}
+      </option>
       {options.map((option, index) => (
         <option key={index} value={option}>
           {option}
@@ -11,6 +17,6 @@ const Dropdown = ({ options, value, onChange }) => {
       ))}
     </select>
   );
-};
+}
 
 export default Dropdown;

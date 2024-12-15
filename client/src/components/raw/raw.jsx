@@ -5,7 +5,7 @@ import ChangeTableButton from "../changeTableButton/changeTableButton";
 import './raw.css'
 
 function Raw() {
-  const socket = useSocket();
+  const {socket} = useSocket();
   const [rules, setRules] = useState([]);
   const [table, setTable] = useState()
   const [tableSelected, setTableSelected] = useState('postrouting')

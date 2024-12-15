@@ -11,7 +11,16 @@ function Nat() {
   const [rules, setRules] = useState([]);
   const [tableSelected, setTableSelected] = useState("postrouting");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newRule, setNewRule] = useState(Array(5).fill("option 1"));
+  const [newRule, setNewRule] = useState(Array(5).fill(""));
+
+
+  const dropdownOptions = [
+    ["Option A1", "Option A2", "Option A3"], 
+    ["Option B1", "Option B2", "Option B3"], 
+    ["Option C1", "Option C2", "Option C3"], 
+    ["Option D1", "Option D2", "Option D3"], 
+    ["Option E1", "Option E2", "Option E3"], 
+  ];
 
   const table = `iptables -t nat -L ${tableSelected.toUpperCase()}`;
 
@@ -42,12 +51,12 @@ function Nat() {
   };
 
   const renderDropdowns = () => {
-    return newRule.map((value, index) => (
+    return dropdownOptions.map((options, index) => (
       <td key={index} className="teste">
         <Dropdown
-          options={["Option 1", "Option 2", "Option 3"]}
-          value={value}
-          onChange={(val) => handleDropdownChange(index, val)}
+          options={options} // Passa opções específicas para este Dropdown
+          value={newRule[index]} // O valor selecionado neste Dropdown
+          onChange={(val) => handleDropdownChange(index, val)} // Atualiza o estado correspondente
         />
       </td>
     ));

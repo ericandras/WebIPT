@@ -4,7 +4,7 @@ import { useSocket } from "../../utils/socketContext";
 import ChangeTableButton from "../changeTableButton/changeTableButton";
 
 function Mangle() {
-  const socket = useSocket();
+  const {socket} = useSocket();
   const [rules, setRules] = useState([]);
   const [table, setTable] = useState()
   const [tableSelected, setTableSelected] = useState('postrouting')
