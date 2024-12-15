@@ -26,6 +26,7 @@ const io = new Server(server, {
     console.log(`a user connected o ${socket.id}`);
     
     socket.on("input_command", (msg) => {
+      console.log("recebeu:", msg)
         const start = proc.spawn(msg.command,{cwd: `/${msg.path??''}`,shell: true})
     start.stdout.on('data', (data) => {
       const output = data.toString().split('\n').filter(line => line.trim() != "")
@@ -33,6 +34,15 @@ const io = new Server(server, {
       console.log("output:",data.toString())
       console.log("treated_output:",output)
       socket.emit("output_command", {lines: output});
+    });
+
+    start.stderr.on("data", data => {
+      console.error(data)
+    })
+
+    start.on('close', (code) => {
+      console.log("input:",msg.command)
+      console.log(`Command finished with exit code: ${code}`);
     });
       
     });
