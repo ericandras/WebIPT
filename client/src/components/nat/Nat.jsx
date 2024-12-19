@@ -64,6 +64,7 @@ function Nat() {
     setIsModalOpen(false);
     console.log("Nova regra adicionada:", teste);
     sendMessage(socket,teste)
+    emitMessage(table);
   };
   return (
     <div>
