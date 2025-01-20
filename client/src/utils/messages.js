@@ -1,10 +1,15 @@
-
-import io from "socket.io-client";
-console.log(`http://${import.meta.env.VITE_IP_SERVER}:4000`)
-const socket = io.connect(`http://${import.meta.env.VITE_IP_SERVER}:4000`); 
-
-function sendMessage(message) {
-    socket.emit("input_command", { command: message });
-}
-
-export default sendMessage
+function sendMessage(socket, message) {
+    if (!socket) {
+      console.error("Socket não está conectado.");
+      return;
+    }
+    
+    try {
+      socket.emit("input_command", { command: message });
+      console.log('concluido',message)
+    } catch (error) {
+      console.log('socket emit bixado',error)
+    }
+  }
+  
+  export default sendMessage;

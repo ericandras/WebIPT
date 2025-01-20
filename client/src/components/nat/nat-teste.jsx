@@ -7,23 +7,25 @@ import Dropdown from "../dropdown/dropdown";
 import "./nat.css";
 
 function Nat() {
-  const {socket, emitMessage} = useSocket();
+  const socket = useSocket();
   const [rules, setRules] = useState([]);
   const [tableSelected, setTableSelected] = useState("postrouting");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newRule, setNewRule] = useState(Array(5).fill(""));
-  const selectedIterface = "enp0s3"
+
 
   const dropdownOptions = [
-    ["ACCEPT", "DROP", "REJECT","LOG","QUEUE","RETURN"], 
-    ["TCP/UDP", "TCP", "UDP"],
-    ["", "", ""], 
+    ["Option A1", "Option A2", "Option A3"], 
+    ["Option B1", "Option B2", "Option B3"], 
+    ["Option C1", "Option C2", "Option C3"], 
+    ["Option D1", "Option D2", "Option D3"], 
+    ["Option E1", "Option E2", "Option E3"], 
   ];
 
   const table = `iptables -t nat -L ${tableSelected.toUpperCase()}`;
 
   useEffect(() => {
-    emitMessage(table);
+    sendMessage(socket, table);
     socket.on("output_command", (data) => {
       const filteredRules = extractRules(data.lines);
       setRules(filteredRules);
@@ -37,7 +39,10 @@ function Nat() {
   const extractRules = (lines) =>
     lines.filter((line) => !line.startsWith("Chain") && !line.startsWith("target"));
 
- 
+  const handleSave = () => {
+    console.log("Nova regra adicionada:", newRule);
+    setIsModalOpen(false);
+  };
 
   const handleDropdownChange = (index, value) => {
     const updatedRule = [...newRule];
@@ -49,23 +54,14 @@ function Nat() {
     return dropdownOptions.map((options, index) => (
       <td key={index} className="teste">
         <Dropdown
-          options={options} 
-          value={newRule[index]} 
-          onChange={(val) => handleDropdownChange(index, val)} 
-          placeholder="Escolha uma regra"
+          options={options} // Passa opções específicas para este Dropdown
+          value={newRule[index]} // O valor selecionado neste Dropdown
+          onChange={(val) => handleDropdownChange(index, val)} // Atualiza o estado correspondente
         />
       </td>
     ));
   };
 
-  const handleSave = () => {
-    
-    const teste = `iptables -t nat -A ${tableSelected.toUpperCase()} -j ${newRule[0]}${newRule[1] == "TCP/UDP" ? "" : ` -p ${newRule[1]}`}${newRule[2]} `
-    setIsModalOpen(false);
-    console.log("Nova regra adicionada:", teste);
-    sendMessage(socket,teste)
-    emitMessage(table);
-  };
   return (
     <div>
       <div className="newRule">

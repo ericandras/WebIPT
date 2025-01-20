@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import './main.css'
 
 import Nat from "../nat/Nat";
@@ -18,7 +17,7 @@ function Main({ activeComponent }) {
       case 'Raw':
         return <Raw/>;
       case 'Mangle':
-        return <Mangle/>; 
+        return <Mangle/>;
       case 'Filter':
         return <Filter/>;
       default:
