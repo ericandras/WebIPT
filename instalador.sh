@@ -28,3 +28,10 @@ apt-get install -y yarn
 yarn -v
 
 echo "Node.js, Yarn e Express.js instalados e configurados com sucesso!"
+
+cd client
+yarn
+cd ../server
+yarn 
+
+echo "Dependencias de yarn instaladas com sucesso!"
