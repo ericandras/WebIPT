@@ -4,7 +4,7 @@ import './main.css'
 import Nat from "../nat/Nat";
 import Raw from "../raw/raw";
 import Mangle from "../mangle/Mangle";
-import Filter from "../filter/Filter";
+import Filter from "../Filter";
 
 
 
