@@ -37,7 +37,7 @@ const io = new Server(server, {
     });
 
     start.stderr.on("data", data => {
-      console.error('data error:',data)
+      console.error('data error:',data.toString())
     })
 
     start.on('close', (code) => {
