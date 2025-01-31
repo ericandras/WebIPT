@@ -1,36 +1,54 @@
-//@ts-nocheck
-
 import React, { createContext, useContext, useEffect, useState } from "react";
-import io from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 import sendMessage from "./messages";
-const SocketContext = createContext();
 
-export const SocketProvider = ({ children }) => {
-  const [socket, setSocket] = useState(null);
+// 🔹 Definição do tipo do contexto (socket nunca é null agora)
+interface SocketContextType {
+  socket: Socket;
+  emitMessage: (message: string) => void;
+}
+
+// 🔹 Criando o contexto sem permitir valores indefinidos ou null
+const SocketContext = createContext<SocketContextType | undefined>(undefined);
+
+// 🔹 Props para o SocketProvider
+interface SocketProviderProps {
+  children: React.ReactNode;
+}
+
+// 🔹 Componente Provider
+export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
+  const [socket, setSocket] = useState<Socket>(
+    io(`http://${import.meta.env.VITE_IP_SERVER}:4000`) // 🔹 Inicializa com um socket válido
+  );
 
   useEffect(() => {
-    const serverUrl = `http://${import.meta.env.VITE_IP_SERVER}:4000`;
-    console.log(`Conectando ao servidor: ${serverUrl}`);
-    
-    const socketInstance = io.connect(serverUrl);
+    console.log(`Conectando ao servidor: ${import.meta.env.VITE_IP_SERVER}:4000`);
+
+    const socketInstance: Socket = io(`http://${import.meta.env.VITE_IP_SERVER}:4000`);
     setSocket(socketInstance);
+
+    return () => {
+      socketInstance.disconnect(); // 🔹 Garante que o socket seja desconectado ao desmontar o componente
+    };
   }, []);
 
-  const emitMessage = (message) => {
-    if (!socket) {
-      console.error("Socket não está conectado.");
-      return;
-    }
-    sendMessage(socket, message); 
+  const emitMessage = (message: string) => {
+    sendMessage(socket, message); // Agora `socket` nunca é null
   };
+
   return (
-    <SocketContext.Provider value={{socket,emitMessage}}>
+    <SocketContext.Provider value={{ socket, emitMessage }}>
       {children}
     </SocketContext.Provider>
   );
 };
 
-
-export const useSocket = () => {
-  return useContext(SocketContext);
+// 🔹 Hook personalizado para acessar o contexto do socket
+export const useSocket = (): SocketContextType => {
+  const context = useContext(SocketContext);
+  if (!context) {
+    throw new Error("useSocket deve ser usado dentro de um <SocketProvider>");
+  }
+  return context;
 };

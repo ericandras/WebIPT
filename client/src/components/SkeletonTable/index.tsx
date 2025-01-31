@@ -1,17 +1,15 @@
-//@ts-nocheck
-
 import React from "react"
 import { useState, useEffect } from "react";
 import sendMessage from "../../utils/messages";
 import { useSocket } from "../../utils/socketContext";
 import ChangeTableButton from "../changeTableButton/changeTableButton";
-import Modal from "../modal/modal";
-import Dropdown from "../dropdown/dropdown";
+import Modal from "../Modal";
+import Dropdown from "../dropdown";
 import "./nat.css";
 
 export default function SkeletonTable() {
   const {socket, emitMessage} = useSocket();
-  const [rules, setRules] = useState([]);
+  const [rules, setRules] = useState<string[]>([]);
   const [tableSelected, setTableSelected] = useState("postrouting");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newRule, setNewRule] = useState(Array(5).fill(""));
@@ -22,6 +20,53 @@ export default function SkeletonTable() {
     ["TCP/UDP", "TCP", "UDP"],
     ["", "", ""], 
   ];
+
+  const table = `iptables -t nat -L ${tableSelected.toUpperCase()}`;
+
+  useEffect(() => {
+    emitMessage(table);
+    socket.on("output_command", (data) => {
+      const filteredRules = extractRules(data.lines);
+      setRules(filteredRules);
+    });
+
+    return () => {
+      socket.off("output_command");
+    };
+  }, [socket, table]);
+
+  const extractRules = (lines:string[]) =>
+    lines.filter((line) => !line.startsWith("Chain") && !line.startsWith("target"));
+
+ 
+
+  const handleDropdownChange = (index:number, value:any) => {
+    const updatedRule = [...newRule];
+    updatedRule[index] = value;
+    setNewRule(updatedRule);
+  };
+
+  const renderDropdowns = () => {
+    return dropdownOptions.map((options, index) => (
+      <td key={index} className="teste">
+        <Dropdown
+          options={options} 
+          value={newRule[index]} 
+          onChange={(val) => handleDropdownChange(index, val)} 
+          placeholder="Escolha uma regra"
+        />
+      </td>
+    ));
+  };
+
+  const handleSave = () => {
+    
+    const teste = `iptables -t nat -A ${tableSelected.toUpperCase()} -j ${newRule[0]}${newRule[1] == "TCP/UDP" ? "" : ` -p ${newRule[1]}`}${newRule[2]} `
+    setIsModalOpen(false);
+    console.log("Nova regra adicionada:", teste);
+    sendMessage(socket,teste)
+    emitMessage(table);
+  };
 
 
    return (

@@ -1,9 +1,13 @@
-//@ts-nocheck
-
 import React from "react";
 import "./Modal.css"; 
 
-const Modal = ({ isOpen, onClose, children }) => {
+interface Props {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode
+}
+
+const Modal = ({ isOpen, onClose, children } : Props) => {
   if (!isOpen) return null;
 
   return (
