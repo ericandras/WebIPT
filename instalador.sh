@@ -12,6 +12,8 @@ curl -fsSL https://deb.nodesource.com/setup_lts.x | -E bash -
 # Instala o Node.js e o gerenciador de pacotes npm
 apt-get install -y nodejs
 
+apt-get install -y iptables
+
 # Verifica a instalação do Node.js e npm
 node -v
 npm -v
