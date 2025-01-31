@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import React, { createContext, useContext, useEffect, useState } from "react";
 import io from "socket.io-client";
 import sendMessage from "./messages";

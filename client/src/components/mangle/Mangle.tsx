@@ -1,10 +1,10 @@
+//@ts-nocheck
 import { useState, useEffect } from "react";
 import sendMessage from "../../utils/messages";
 import { useSocket } from "../../utils/socketContext";
 import ChangeTableButton from "../changeTableButton/changeTableButton";
-import './raw.css'
 
-function Raw() {
+function Mangle() {
   const {socket} = useSocket();
   const [rules, setRules] = useState([]);
   const [table, setTable] = useState()
@@ -30,12 +30,12 @@ function Raw() {
   };
 
   function handleSelect(buttonActive) {
-    setTable(`iptables -t raw -L ${buttonActive.toUpperCase()}`)
+    setTable(`iptables -t mangle -L ${buttonActive.toUpperCase()}`)
     setTableSelected(buttonActive)
   }
   return (
     <div>
-      <h1>Regras RAW</h1>
+      <h1>Regras MANGLE</h1>
       <div  className="conteudo">
       <menu>
         <ChangeTableButton isSelected={tableSelected === 'postrouting'} onSelect={() => handleSelect('postrouting')}>Postrouting</ChangeTableButton>
@@ -75,8 +75,9 @@ function Raw() {
 
 
       </div>
-      
+
     </div>
   );
 }
-export default Raw
+
+export default Mangle;

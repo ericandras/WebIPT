@@ -1,9 +1,11 @@
+//@ts-nocheck
+import React from 'react'
 import { useState, useEffect } from "react";
 import sendMessage from "../../utils/messages";
 import { useSocket } from "../../utils/socketContext";
 import ChangeTableButton from "../changeTableButton/changeTableButton";
 
-function Mangle() {
+function Filter() {
   const {socket} = useSocket();
   const [rules, setRules] = useState([]);
   const [table, setTable] = useState()
@@ -29,12 +31,13 @@ function Mangle() {
   };
 
   function handleSelect(buttonActive) {
-    setTable(`iptables -t mangle -L ${buttonActive.toUpperCase()}`)
+    setTable(`iptables -t filter -L ${buttonActive.toUpperCase()}`)
     setTableSelected(buttonActive)
   }
+  
   return (
     <div>
-      <h1>Regras MANGLE</h1>
+      <h1>Regras FILTER</h1>
       <div  className="conteudo">
       <menu>
         <ChangeTableButton isSelected={tableSelected === 'postrouting'} onSelect={() => handleSelect('postrouting')}>Postrouting</ChangeTableButton>
@@ -45,7 +48,7 @@ function Mangle() {
       </menu>
       <div>
         <table>
-        <thead>
+          <thead>
             <tr>
               <th>#</th>
               <th>Target</th>
@@ -79,4 +82,4 @@ function Mangle() {
   );
 }
 
-export default Mangle;
+export default Filter

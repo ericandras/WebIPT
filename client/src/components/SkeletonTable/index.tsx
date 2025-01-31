@@ -1,0 +1,81 @@
+//@ts-nocheck
+
+import React from "react"
+import { useState, useEffect } from "react";
+import sendMessage from "../../utils/messages";
+import { useSocket } from "../../utils/socketContext";
+import ChangeTableButton from "../changeTableButton/changeTableButton";
+import Modal from "../modal/modal";
+import Dropdown from "../dropdown/dropdown";
+import "./nat.css";
+
+export default function SkeletonTable() {
+  const {socket, emitMessage} = useSocket();
+  const [rules, setRules] = useState([]);
+  const [tableSelected, setTableSelected] = useState("postrouting");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newRule, setNewRule] = useState(Array(5).fill(""));
+  const selectedIterface = "enp0s3"
+
+  const dropdownOptions = [
+    ["ACCEPT", "DROP", "REJECT","LOG","QUEUE","RETURN"], 
+    ["TCP/UDP", "TCP", "UDP"],
+    ["", "", ""], 
+  ];
+
+
+   return (
+    <div>
+      <div className="newRule">
+        <button onClick={() => setIsModalOpen(true)}>Adicionar Regra</button>
+      </div>
+
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <h2>Adicionar Nova Regra {tableSelected.toUpperCase()}</h2>
+        <table>
+          <tbody>
+            <tr>{renderDropdowns()}</tr>
+          </tbody>
+        </table>
+        <button onClick={handleSave}>Salvar</button>
+      </Modal>
+
+      <h1>Regras NAT</h1>
+      <div className="conteudo">
+        <menu>
+          {["postrouting", "prerouting", "output"].map((btn) => (
+            <ChangeTableButton
+              key={btn}
+              isSelected={tableSelected === btn}
+              onSelect={() => setTableSelected(btn)}
+            >
+              {btn.charAt(0).toUpperCase() + btn.slice(1)}
+            </ChangeTableButton>
+          ))}
+        </menu>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Target</th>
+              <th>Prot</th>
+              <th>Opt</th>
+              <th>Source</th>
+              <th>Destination</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rules.map((rule, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                {rule.trim().split(/\s+/).map((item, idx) => (
+                  <td key={idx}>{item}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+   )
+}

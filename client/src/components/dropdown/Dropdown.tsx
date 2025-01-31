@@ -1,5 +1,5 @@
 
-
+//@ts-nocheck
 function Dropdown({ options, value, onChange, placeholder = "Selecione uma opção" }) {
   return (
     <select

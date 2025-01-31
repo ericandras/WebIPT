@@ -1,10 +1,12 @@
-import React from 'react'
+//@ts-nocheck
+
 import { useState, useEffect } from "react";
 import sendMessage from "../../utils/messages";
 import { useSocket } from "../../utils/socketContext";
 import ChangeTableButton from "../changeTableButton/changeTableButton";
+import './raw.css'
 
-function Filter() {
+function Raw() {
   const {socket} = useSocket();
   const [rules, setRules] = useState([]);
   const [table, setTable] = useState()
@@ -30,13 +32,12 @@ function Filter() {
   };
 
   function handleSelect(buttonActive) {
-    setTable(`iptables -t filter -L ${buttonActive.toUpperCase()}`)
+    setTable(`iptables -t raw -L ${buttonActive.toUpperCase()}`)
     setTableSelected(buttonActive)
   }
-  
   return (
     <div>
-      <h1>Regras FILTER</h1>
+      <h1>Regras RAW</h1>
       <div  className="conteudo">
       <menu>
         <ChangeTableButton isSelected={tableSelected === 'postrouting'} onSelect={() => handleSelect('postrouting')}>Postrouting</ChangeTableButton>
@@ -47,7 +48,7 @@ function Filter() {
       </menu>
       <div>
         <table>
-          <thead>
+        <thead>
             <tr>
               <th>#</th>
               <th>Target</th>
@@ -76,9 +77,8 @@ function Filter() {
 
 
       </div>
-
+      
     </div>
   );
 }
-
-export default Filter
+export default Raw

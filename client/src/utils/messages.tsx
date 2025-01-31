@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 function sendMessage(socket, message) {
     if (!socket) {
       console.error("Socket não está conectado.");
