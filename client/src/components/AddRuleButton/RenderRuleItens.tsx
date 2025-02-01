@@ -16,8 +16,8 @@ export default function({formItens, handle, newRule} : Props) {
             key={index}
             options={item.options??[]} 
             value={newRule[index]} 
-            onChange={(val) => handle(index, val)} 
-            placeholder="Escolha uma regra"
+            onSelect={(val) => handle(index, val)} 
+            placeholder={item.title}
           />
       }
     })}

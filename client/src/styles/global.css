@@ -4,6 +4,7 @@
   box-sizing: border-box;
   font-family: 'Poppins', serif;
   font-weight: 500;
+  user-select: none;
 }
 h1{
  

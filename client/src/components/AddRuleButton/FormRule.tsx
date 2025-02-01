@@ -26,7 +26,7 @@ export default function({selectedChain, chainOptions, table, setIsModalOpen} : P
       required: true,
       command: '-j',
       type: 'select',
-      title: 'ação',
+      title: 'target',
       info: 'Ação a ser realizada',
       options: Object.keys(chainOptions[selectedChain]!)
     }
@@ -57,7 +57,7 @@ const handleDropdownChange = (index:number, value:any) => {
  return <>
   <h2 className="title-add-rule">Adicionar Nova Regra <span>{selectedChain}</span></h2>
   <RenderRuleItens handle={handleDropdownChange} formItens={formItens} newRule={newRule} />
-  <button onClick={handleSave}>Salvar</button>
+  <button className="save-button" onClick={handleSave}>Salvar</button>
  </>
 }
 
