@@ -12,10 +12,11 @@
   
   .modal-container {
     position: relative;
-    background-color: var(--bg-color);
+    background-color: var(--second-bg-color);
+    border: 3px solid var(--second-bd-color);
     border-radius: 8px;
-    width: 60vw;
-    height: 30vh;
+    width: 600px;
+    height: 700px;
     max-width: 90%;
     padding: 20px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -23,19 +24,18 @@
   }
   
   .modal-close {
-    font-weight: 400;
     position: absolute;
-    top: 0px;
-    right: 10px;
+    top: 25px;
+    right: 30px;
     background: none;
     border: none;
-    font-size: 2rem;
-    cursor: pointer;
-    color: #fff;
+    background-image: url('../../assets/close-buttton.svg');
+    background-size: contain;
+    height: 20px;
+    width: 20px;
   }
   
   .modal-content {
-    
     margin-top: 20px;
     display: flex;
     flex-direction: column;

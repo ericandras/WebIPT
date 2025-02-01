@@ -1,0 +1,28 @@
+.newRule button {
+  background-color: #03A64B;
+  font-weight: medium;
+  color: var(--font-color-p);
+  border-width: 0px;
+  font-size: 24px;
+  padding: 12px;
+  border-radius: 7px;
+
+}
+
+.newRule {
+  right: 5%;
+  position: absolute;
+}
+
+h2.title-add-rule {
+  font-weight:600;
+  font-size: 36px;
+  text-align: center;
+}
+
+h2.title-add-rule span {
+  font-weight:700;
+  color: var(--font-color-active);
+  text-transform: uppercase;
+}
+

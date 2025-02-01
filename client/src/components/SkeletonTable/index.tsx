@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useSocket } from "../../contexts/SocketContext/socketContext";
 import ChangeTableButton from "../ChainButtons";
 import Modal from "../Modal";
-import Dropdown from "../dropdown";
+import Dropdown from "../Dropdown";
 import "./style.css";
 import { Chain, ChainKey, ChainOptions, FormItem } from "../../interfaces/chain";
 import TableRules from "../TableRules";

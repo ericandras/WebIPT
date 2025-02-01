@@ -1,5 +1,5 @@
 import React from "react";
-import "./Modal.css"; 
+import "./style.css"; 
 
 interface Props {
   isOpen: boolean;
@@ -13,9 +13,7 @@ const Modal = ({ isOpen, onClose, children } : Props) => {
   return (
     <div className="modal-overlay">
       <div className="modal-container">
-        <button className="modal-close" onClick={onClose}>
-        x
-        </button>
+        <button className="modal-close" onClick={onClose}></button>
         <div className="modal-content">{children}</div>
       </div>
     </div>
