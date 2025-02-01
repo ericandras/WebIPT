@@ -24,6 +24,7 @@ h2.title-add-rule span {
   font-weight:700;
   color: var(--font-color-active);
   text-transform: uppercase;
+  display: block;
 }
 
 /* .save-button {
