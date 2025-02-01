@@ -1,0 +1,30 @@
+import React from "react"
+
+interface Props {
+  rules:string[]
+}
+
+export default function({rules}:Props) {
+  return (        <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Target</th>
+        <th>Prot</th>
+        <th>Opt</th>
+        <th>Source</th>
+        <th>Destination</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rules.map((rule, index) => (
+        <tr key={index}>
+          <td>{index + 1}</td>
+          {rule.trim().split(/\s+/).map((item, idx) => (
+            <td key={idx}>{item}</td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>)
+}

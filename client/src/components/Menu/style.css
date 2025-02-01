@@ -18,7 +18,7 @@ nav{
     transition: .3s;
     cursor: pointer;
     font-weight: bold;
-    color: var(--font-color);
+    color: var(--font-color-p);
     box-shadow: var(--shadow-color) 0px 3px 4px;
     border: var(--second-bd-color) 3px solid;
     border-left: 0px;

@@ -35,8 +35,6 @@
 
 
 
-
-
 .dropdown:hover {
     background-color: #2a2b5c;
     border-color: #3a3bc8;
@@ -66,6 +64,26 @@
     flex-direction: column;
     flex-wrap: wrap;
     box-shadow: var(--shadow-color) 0px 5px 15px;
-    color: var(--font-color-main);
+    color: var(--font-color-p);
     font-size: 22px;
   }
+
+
+  table, th, td {
+    border: 1px solid rgb(255, 255, 255);
+    }
+    
+    table {
+    border-collapse: collapse;
+    margin: auto;
+    }
+    
+    th, td{
+    padding: 10px;
+    text-align: center;
+    width: 200px;
+    }
+    
+    th{
+    font-weight: bold;
+    }

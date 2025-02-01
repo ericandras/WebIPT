@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import sendMessage from "../../utils/messages";
 import { useSocket } from "../../utils/socketContext";
-import ChangeTableButton from "../changeTableButton/changeTableButton";
+import ChangeTableButton from "../ChainButtons";
 import Modal from "../Modal";
 import Dropdown from "../dropdown";
 import "./nat.css";
