@@ -1,20 +1,15 @@
-import "./App.css";
-import { useState } from "react";
-import Main from './components/main/main'
-import Menu from "./components/menu/Menu";
+import "./styles/global.css";
+import Routes from './routes'
+import Menu from "./components/Menu";
 
 
 function App() {
-  const [activeComponent, setActiveComponent] = useState(null);
 
   return (
     <div className='bg'>
-      <Menu onMenuClick={setActiveComponent} activeComponent={activeComponent}/>
-      <Main activeComponent={activeComponent} />
+      <Menu />
+      <Routes />
     </div>
-
-    
-   
   );
 }
 

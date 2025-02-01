@@ -175,6 +175,7 @@ export default function SkeletonTable() {
 
 
    return (
+    <section className="main-info">
     <div>
       <div className="newRule">
         <button onClick={() => setIsModalOpen(true)}>Adicionar Regra</button>
@@ -227,5 +228,6 @@ export default function SkeletonTable() {
         </table>
       </div>
     </div>
+    </section>
    )
 }
