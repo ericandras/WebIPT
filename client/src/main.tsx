@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.js'
 import './styles/variables.css'
-import { SocketProvider } from './utils/socketContext.js'
+import { SocketProvider } from './contexts/SocketContext/socketContext.js'
 import { RouteProvider } from './routes/RoutesProvider.js'
 
 

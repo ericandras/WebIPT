@@ -1,7 +1,6 @@
 import React from "react"
 import { useState, useEffect } from "react";
-import sendMessage from "../../utils/messages";
-import { useSocket } from "../../utils/socketContext";
+import { useSocket } from "../../contexts/SocketContext/socketContext";
 import ChangeTableButton from "../ChainButtons";
 import Modal from "../Modal";
 import Dropdown from "../dropdown";

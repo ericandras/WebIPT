@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import Modal from "../Modal";
 import { ChainKey, ChainOptions, FormItem } from "../../interfaces/chain";
 import Dropdown from "../dropdown";
-import { useSocket } from "../../utils/socketContext";
-import sendMessage from "../../utils/messages";
+import { useSocket } from "../../contexts/SocketContext/socketContext";
+import sendMessage from "../../contexts/SocketContext/messages";
 
 interface Props {
   selectedChain: ChainKey;
