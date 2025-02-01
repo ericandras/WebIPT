@@ -1,6 +1,6 @@
 //@ts-nocheck
 
-import Nat from "../components/nat/Nat";
+import Nat from "../pages/Nat";
 import Raw from "../components/raw/raw";
 import Mangle from "../components/mangle/Mangle";
 import Filter from "../components/Filter";

@@ -30,7 +30,7 @@ nav{
     color: var(--font-hover);
     transition: .3s;
 }
-.active{
+.link.active{
     background-color:var(--bg-hover);
     color: var(--bg-color);
     box-shadow: var(--menu-shadow) 0px 0px 25px;

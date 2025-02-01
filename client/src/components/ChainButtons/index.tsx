@@ -1,5 +1,6 @@
 import React from 'react';
 import { ChainKey } from '../../interfaces/chain';
+import './style.css'
 
 interface Props {
     chains: ChainKey[];
@@ -10,13 +11,14 @@ interface Props {
 const ChainButtons = ({chains, onSelect, selected}: Props) => {
     
     return (
-        <menu>
+        <menu className='chains-button'>
         {chains.map((btn) => (
          <button 
             key={btn} 
             className={selected === btn ? "active" : ''} 
-            onClick={() => {onSelect(btn)}}>{btn}
-            </button>
+            onClick={() => {onSelect(btn)}}>
+                {btn}
+        </button>
         ))}
       </menu>
        
