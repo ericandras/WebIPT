@@ -1,11 +1,13 @@
 import React from "react"
+import "./style.css"
 
 interface Props {
   rules:string[]
 }
 
 export default function({rules}:Props) {
-  return (        <table>
+  return (        
+  <table className="rule-table">
     <thead>
       <tr>
         <th>#</th>
@@ -14,6 +16,7 @@ export default function({rules}:Props) {
         <th>Opt</th>
         <th>Source</th>
         <th>Destination</th>
+        <th>Edit</th>
       </tr>
     </thead>
     <tbody>
