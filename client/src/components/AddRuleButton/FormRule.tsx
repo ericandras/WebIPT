@@ -60,12 +60,23 @@ export default function({selectedChain, chainOptions, table, setIsModalOpen} : P
 
   }, [newRule, selectedChain]) 
 
+
+  const makeCommand = (form: {command: string, value: string}[]) => {
+    let command = `iptables -t nat -A ${selectedChain.toUpperCase()} `
+    for(let i=0; i< form.length; i++) {
+      if(form[i]&&form[i].value!='') {
+        command += form[i].command == form[i].value ? `${form[i].command} ` : `${form[i].command} ${form[i].value} `
+      }
+    }
+    return command
+  }
+
 const handleSave = () => {
-  // const teste = `iptables -t nat -A ${selectedChain.toUpperCase()} -j ${newRule[0]}${newRule[1] == "TCP/UDP" ? "" : ` -p ${newRule[1]}`}${newRule[2]} `
   setIsModalOpen(false);
-  // console.log("Nova regra adicionada:", teste);
-  // emitMessage(teste)
-  emitMessage(table);
+  emitMessage(makeCommand(newRule));
+  setTimeout(() => {
+    emitMessage(table);
+  }, 100)
 };
 
 
@@ -79,14 +90,8 @@ const handleDropdownChange = (index:number, command: string, value:string) => {
   }
   setNewRule(updatedRule);
 
-  let commandT = `iptables -t nat -A ${selectedChain.toUpperCase()} `
-  for(let i=0; i< updatedRule.length; i++) {
-    if(updatedRule[i]&&updatedRule[i].value!='') {
-      commandT += updatedRule[i].command == updatedRule[i].value ? `${updatedRule[i].command} ` : `${updatedRule[i].command} ${updatedRule[i].value} `
-    }
-  }
-
-  console.log(commandT)
+ 
+  console.log( makeCommand(updatedRule))
 };
 
  return <>
