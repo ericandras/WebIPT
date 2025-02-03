@@ -25,7 +25,7 @@ const chainOptions:ChainOptions = {
         {
           command: '-d',
           type: 'select/text',
-          options: ['localhost'],
+          options: ['localhost', 'anywhere'],
           title: 'IP de destino',
           placeholder: '10.0.0.0/8',
           info: 'Especifica o endereço IP de destino (menos comum na POSTROUTING).'

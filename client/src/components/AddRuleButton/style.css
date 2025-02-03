@@ -27,6 +27,17 @@ h2.title-add-rule span {
   display: block;
 }
 
+button.save-button {
+  background-color: #03A64B;
+  font-weight: 600;
+  color: var(--font-color-p);
+  border-width: 0px;
+  font-size: 24px;
+  padding: 2px 18px;
+  border-radius: 5px;
+  text-transform: uppercase;
+}
+
 /* .save-button {
   z-index: 1;
 } */

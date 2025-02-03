@@ -18,7 +18,7 @@ export default function({selectedChain, chainOptions, table} : Props) {
   
   return (<>
       <div className="newRule">
-        <button onClick={() => setIsModalOpen(true)}>Adicionar Regra</button>
+        <button className="formButton" onClick={() => setIsModalOpen(true)}>Adicionar Regra</button>
       </div>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>

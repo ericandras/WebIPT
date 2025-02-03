@@ -1,5 +1,7 @@
+import DropdownInput from "../../DropdownInput";
 import { FormItem } from "../../interfaces/chain";
 import Dropdown from "../Dropdown";
+import Input from "../Input";
 
 interface Props {
   formItens: FormItem[]
@@ -15,10 +17,21 @@ export default function({formItens, handle, newRule} : Props) {
           return <Dropdown
             key={index}
             options={item.options??[]} 
-            value={newRule[index]} 
             onSelect={(val) => handle(index, val)} 
             placeholder={item.title}
           />
+        case 'checkbox': 
+          return <h2> checkbox </h2>
+        case 'select/text':
+          return <DropdownInput 
+            key={index}    
+            options={item.options??[]} 
+            value={newRule[index]} 
+            onSelect={(val) => handle(index, val)} 
+            placeholder={item.title}
+            />
+        case 'text':
+          return <Input key={index} value={newRule[index]} onChange={(val) => handle(index, val)} placeholder={item.title} />
       }
     })}
   </form>

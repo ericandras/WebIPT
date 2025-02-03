@@ -1,0 +1,24 @@
+.input {
+  width: 300px;
+  padding: 15px 15px;
+  background-color: transparent;
+  color: var(--font-color-p);
+  font-size: 20px;
+  font-weight: 600;
+  font-family: 'Poppins', serif;
+  appearance: none;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none; 
+  cursor: pointer;
+  border: 3px solid var(--second-bd-color);
+  border-radius: 8px;
+  z-index: 1;
+  text-transform: uppercase;
+  height: 61px;
+  margin-bottom: 10px;
+}
+
+.input:focus {
+  color: var(--font-color-active-second);
+}
