@@ -1,0 +1,50 @@
+/* ToggleSwitch.css */
+.toggle-container {
+  display: flex;
+  align-items: center;
+  background: black;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 3px solid var(--second-bd-color);
+  width: 300px;
+  justify-content: space-between;
+}
+
+.ip-text {
+  color: var(--font-color-p);
+  text-transform: uppercase;
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.switch {
+  width: 46px;
+  height: 30px;
+  background: var(--checkbox-background-color-active);
+  border-radius: 15px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-sizing: border-box;
+  border: 2px solid var(--checkbox-background-color-active);
+  display: flex;
+  align-items: center;
+}
+
+.switch.off {
+  background: var(--second-bg-color);
+  border: 2px solid var(--second-bd-color);
+}
+
+.slider {
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  transform: translateX(15%);
+}
+
+.switch.on .slider {
+  transform: translateX(100%);
+}

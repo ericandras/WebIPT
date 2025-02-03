@@ -13,9 +13,12 @@
   --second-bg-color: #000000;
   --primary-bg-color:#1E1E1E;
   --bg-hover: #04DA60;
+  --checkbox-background-color-active: #25D366;
 
   /* border */
   --primary-bd-color: #03A64B;
   --second-bd-color: #04DA60;
+
+  
 }
 
