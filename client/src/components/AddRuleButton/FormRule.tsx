@@ -16,7 +16,7 @@ export default function({selectedChain, chainOptions, table, setIsModalOpen} : P
 
   const {socket, emitMessage} = useSocket();
 
-  const [newRule, setNewRule] = useState<string[]>([]);
+  const [newRule, setNewRule] = useState<{command: string, value: string}[]>([]);
   const [selectedAction, setSelectedAction] = useState('');
   const [formItens, setFormItens] = useState<FormItem[]>([]);
 
@@ -32,22 +32,22 @@ export default function({selectedChain, chainOptions, table, setIsModalOpen} : P
     }
     form.push(targets)
     const extraOptions:{conditional: any; option: OptionField[]}[] = []
-    if(newRule[0]&&newRule[0]!='') {
-      for(let i =0; i < chainOptions[selectedChain]![newRule[0]].required!.length; i++) {
-        if(chainOptions[selectedChain]![newRule[0]].required![i].optional) {
-          extraOptions.push({conditional: form.length, option: chainOptions[selectedChain]![newRule[0]].required![i].optional!})
+    if(newRule[0]&&newRule[0].value&&newRule[0].value!='') {
+      for(let i =0; i < chainOptions[selectedChain]![newRule[0].value].required!.length; i++) {
+        if(chainOptions[selectedChain]![newRule[0].value].required![i].optional) {
+          extraOptions.push({conditional: form.length, option: chainOptions[selectedChain]![newRule[0].value].required![i].optional!})
         }
-        form.push({ ...chainOptions[selectedChain]![newRule[0]].required![i], required: true })
+        form.push({ ...chainOptions[selectedChain]![newRule[0].value].required![i], required: true })
       }
-      if(chainOptions[selectedChain]![newRule[0]].optional) {
-        for(let i =0; i < chainOptions[selectedChain]![newRule[0]].optional!.length; i++) {
-          form.push({ ...chainOptions[selectedChain]![newRule[0]].optional![i], required: false })
+      if(chainOptions[selectedChain]![newRule[0].value].optional) {
+        for(let i =0; i < chainOptions[selectedChain]![newRule[0].value].optional!.length; i++) {
+          form.push({ ...chainOptions[selectedChain]![newRule[0].value].optional![i], required: false })
         }
       }
     }
     
     for (let i=0; i< extraOptions.length; i++) {
-      if(newRule[extraOptions[i].conditional]&&newRule[extraOptions[i].conditional]!= ''){
+      if(newRule[extraOptions[i].conditional]&&newRule[extraOptions[i].conditional].value!= ''){
        for (let h=0; h<extraOptions[i].option.length; h++) {
         form.push({...extraOptions[i].option[i], required: false})
        } 
@@ -56,26 +56,37 @@ export default function({selectedChain, chainOptions, table, setIsModalOpen} : P
 
     
     setFormItens(form)
-
-    console.log('targets....,',targets)
-
     // setSelectedAction()
 
   }, [newRule, selectedChain]) 
 
 const handleSave = () => {
-  const teste = `iptables -t nat -A ${selectedChain.toUpperCase()} -j ${newRule[0]}${newRule[1] == "TCP/UDP" ? "" : ` -p ${newRule[1]}`}${newRule[2]} `
+  // const teste = `iptables -t nat -A ${selectedChain.toUpperCase()} -j ${newRule[0]}${newRule[1] == "TCP/UDP" ? "" : ` -p ${newRule[1]}`}${newRule[2]} `
   setIsModalOpen(false);
-  console.log("Nova regra adicionada:", teste);
-  emitMessage(teste)
+  // console.log("Nova regra adicionada:", teste);
+  // emitMessage(teste)
   emitMessage(table);
 };
 
 
-const handleDropdownChange = (index:number, value:any) => {
-  const updatedRule = [...newRule];
-  updatedRule[index] = value;
+const handleDropdownChange = (index:number, command: string, value:string) => {
+ 
+
+  let updatedRule = [...newRule];
+  updatedRule[index] = { command, value};
+  if(newRule[index]&&newRule[index].command === '-j' && newRule[index].value != value) {
+    updatedRule = [{ command, value}]
+  }
   setNewRule(updatedRule);
+
+  let commandT = `iptables -t nat -A ${selectedChain.toUpperCase()} `
+  for(let i=0; i< updatedRule.length; i++) {
+    if(updatedRule[i]&&updatedRule[i].value!='') {
+      commandT += updatedRule[i].command == updatedRule[i].value ? `${updatedRule[i].command} ` : `${updatedRule[i].command} ${updatedRule[i].value} `
+    }
+  }
+
+  console.log(commandT)
 };
 
  return <>

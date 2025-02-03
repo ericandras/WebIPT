@@ -5,13 +5,20 @@ interface Props {
   options: string[],
   onSelect: (e:any) => void,
   placeholder: string
+  value: string
 }
 
-function Dropdown({ options, onSelect, placeholder = "#" } : Props) {
+function Dropdown({value, options, onSelect, placeholder = "#" } : Props) {
   
   const [isOpen, setIsOpen] = useState(false); // Estado para controlar a visibilidade do dropdown
   const [selectedOption, setSelectedOption] = useState<string | null>(null); // Estado para a opção selecionada
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if(selectedOption != value) {
+      handleSelect(value)
+    }
+  }, [value])
 
   // Função para lidar com a seleção de uma opção
   const handleSelect = (value: string) => {

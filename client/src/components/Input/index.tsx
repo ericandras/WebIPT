@@ -1,4 +1,4 @@
-import { ChangeEvent, forwardRef, useState } from "react"
+import { ChangeEvent, forwardRef, useEffect, useState } from "react"
 import "./style.css"
 
 interface Props {
@@ -9,6 +9,12 @@ interface Props {
 const Input = forwardRef<HTMLInputElement, Props>(
   ({ value = '', onChange, placeholder = '...' }, ref) => {
   const [val, setValue] = useState<string>(value)
+
+  useEffect(() => {
+    if(val != value) {
+      setValue(value)
+    }
+  }, [value])
 
   const valid = () => {
     return true

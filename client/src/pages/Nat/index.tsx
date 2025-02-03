@@ -3,7 +3,7 @@ import { ChainOptions } from "../../interfaces/chain";
 
 const chainOptions:ChainOptions = {
   postrouting: {
-    masquerade: {
+    MASQUERADE: {
       required: [
         {
           command: '-s', 
@@ -33,7 +33,7 @@ const chainOptions:ChainOptions = {
       ],
       info: 'Realiza mascaramento do IP de origem, usado em conexões dinâmicas (ex.: NAT para internet).',
     },
-    snat: {
+    SNAT: {
       required: [
         {
           command: '-s', 

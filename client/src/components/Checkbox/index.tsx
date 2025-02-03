@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './style.css'; // Importando o arquivo CSS
 
 interface CheckboxProps {
   title: string; // Título do checkbox
   onSelect: (isChecked: boolean) => void; // Função chamada quando o estado muda
+  value: string
 }
 
-const Checkbox: React.FC<CheckboxProps> = ({ title, onSelect }) => {
+const Checkbox: React.FC<CheckboxProps> = ({ title, onSelect, value }) => {
   const [isOn, setIsOn] = useState(false);
 
   // Função para lidar com a mudança de estado
@@ -16,6 +17,12 @@ const Checkbox: React.FC<CheckboxProps> = ({ title, onSelect }) => {
     onSelect(newCheckedState); // Chama a função onSelect com o novo estado
   };
 
+  useEffect(() => {
+    let check = value != ""
+    if(check != isOn) {
+      setIsOn(check)
+    }
+  }, [value])
 
 
   return (

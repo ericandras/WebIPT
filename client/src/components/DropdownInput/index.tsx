@@ -1,4 +1,4 @@
-import Input from '../components/Input';
+import Input from '../Input';
 import './style.css'
 import { useEffect, useRef, useState } from 'react';
 
@@ -9,7 +9,7 @@ interface Props {
   placeholder: string
 }
 
-function DropdownInput({ options, onSelect, placeholder = "#" } : Props) {
+function DropdownInput({ options, onSelect, placeholder = "#", value} : Props) {
   
   const [isOpen, setIsOpen] = useState(false); // Estado para controlar a visibilidade do dropdown
   const [selectedOption, setSelectedOption] = useState<string | null>(null); // Estado para a opção selecionada
@@ -51,6 +51,14 @@ function DropdownInput({ options, onSelect, placeholder = "#" } : Props) {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isOpen]);
+
+  useEffect(() => {
+    if(selectedOption != value) {
+      setIsInput(true)
+      handleInput(value)
+    }
+  }, [value])
+
 
   return (
     <div className={`dropdown-wrapper ${isOpen ? 'open' : ''}`} ref={dropdownRef}>
