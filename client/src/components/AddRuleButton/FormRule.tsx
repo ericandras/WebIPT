@@ -3,6 +3,7 @@ import { ChainKey, ChainOptions, FormItem, OptionField } from "../../interfaces/
 import Dropdown from "../Dropdown"
 import { useSocket } from "../../contexts/SocketContext/socketContext";
 import RenderRuleItens from "./RenderRuleItens";
+import { Command } from "../../utils/getOptionsChain";
 
 
 interface Props {
@@ -49,7 +50,7 @@ export default function({selectedChain, chainOptions, table, setIsModalOpen} : P
     for (let i=0; i< extraOptions.length; i++) {
       if(newRule[extraOptions[i].conditional]&&newRule[extraOptions[i].conditional].value!= ''){
        for (let h=0; h<extraOptions[i].option.length; h++) {
-        form.push({...extraOptions[i].option[i], required: false})
+        form.push({...extraOptions[i].option[h], required: false})
        } 
       }
     }
@@ -62,13 +63,18 @@ export default function({selectedChain, chainOptions, table, setIsModalOpen} : P
 
 
   const makeCommand = (form: {command: string, value: string}[]) => {
-    let command = `iptables -t nat -A ${selectedChain.toUpperCase()} `
+    let command_start = `iptables -t nat -A ${selectedChain.toUpperCase()} `
+    let command_end = ''
     for(let i=0; i< form.length; i++) {
       if(form[i]&&form[i].value!='') {
-        command += form[i].command == form[i].value ? `${form[i].command} ` : `${form[i].command} ${form[i].value} `
+        if((['-j', '--to-source', '--random', '--persistent']).includes(form[i].command)) {
+          command_end += form[i].command == form[i].value ? `${form[i].command} ` : `${form[i].command} ${form[i].value} `
+        } else {
+          command_start += form[i].command == form[i].value ? `${form[i].command} ` : `${form[i].command} ${form[i].value} `
+        }
       }
     }
-    return command
+    return command_start + command_end
   }
 
 const handleSave = () => {

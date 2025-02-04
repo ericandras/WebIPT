@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function({formItens, handle, newRule} : Props) {
-  return <form> 
+  return <form className="render-rule-itens"> 
     {formItens.map((item, index) => {
       switch (item.type) {
         case 'select':

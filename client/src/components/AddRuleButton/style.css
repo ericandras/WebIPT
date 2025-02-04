@@ -38,6 +38,12 @@ button.save-button {
   text-transform: uppercase;
 }
 
+.render-rule-itens {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 /* .save-button {
   z-index: 1;
 } */
