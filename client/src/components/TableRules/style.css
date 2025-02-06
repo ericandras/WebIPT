@@ -1,31 +1,107 @@
-table.rule-table, .rule-table th, .rule-table td {
- 
 
-  }
   
-  table.rule-table {
+  .rule-table-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .rule-table-header {
     border-collapse: separate;
-    margin: auto;
     border: 3px solid var(--primary-bd-color);
     border-radius: 15px;
     border-spacing: 0;
     width: 95%;
+    position: relative;
+    display: flex;
+    height: 53px;
   }
-  
-  .rule-table th, .rule-table td{
-    padding: 10px;
-    text-align: left;
+
+  .rule-tr {
+    display: flex;
+    align-items: center;
   }
-  .rule-table th:not(tr :first-child) {
+
+  .order-tr {
+    width: 5%;
+    justify-content: center;
+  }
+  .target-tr {
+     min-width: 15%;
+  }
+  .prot-tr {
+     min-width: 15%;
+  }
+  .opt-tr {
+     min-width: 8%;
+  }
+  .source-tr {
+     min-width: 15%;
+  }
+  .destination-tr {
+     min-width: 30%;
+  }
+  .rule-table-body {
+    margin-top: 12px;
+    width: 95%;
+    border-width: 3px;
+    border-style: solid;
+    border-color: var(--primary-bd-color);
+    border-radius: 15px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .rule-table-header .rule-tr:not(.rule-tr:first-child) {
     border-left-width: 3px;
     border-left-style: solid;
     border-image: linear-gradient(to bottom,#000 0%, #000 20%, var(--primary-bd-color) 10%, var(--primary-bd-color) 80%,#000 80%, #000 100%) 1;
+    padding-left: 6px;
   }
-  .rule-table tr :first-child{
+
+  .rule-table-header .rule-tr:first-child {
+    width: 5%;
     text-align: center;
+    justify-content: center;
   }
-  
-  .rule-table th{
-  font-weight: bold;
+
+  .rule-table-body .rule-table-line:first-child .rule-tr:first-child {
+    border-left: 0px;
+    border-top-left-radius: 15px;
+  }
+
+  .rule-table-body .rule-table-line:first-child div.rule-tr {
+    border-top: 0px;
+  }
+  .rule-table-body .rule-table-line .rule-tr:first-child {
+    border-left: 0px;
+  }
+  .rule-table-body .rule-table-line .rule-tr:last-child {
+    border-right: 0px;
+  }
+  .rule-table-body .rule-table-line:last-child div.rule-tr {
+    border-bottom: 0px;
+  }
+
+  .rule-table-body .rule-table-line:first-child  {
+    width: 100%;
+  }
+
+  .rule-table-body .rule-table-line:last-child .rule-tr:first-child {
+    border-bottom-left-radius: 15px;
+  }
+
+  .rule-table-line .rule-tr {
+    border-bottom: 2px;
+    border-left: 2px;
+    border-right: 1px;
+    border-top: 1px;
+    border-style: solid;
+    border-color: var(--primary-bd-color);
+    padding-left: 6px;
+  }
+
+  .rule-table-line {
+    display: flex;
   }
 

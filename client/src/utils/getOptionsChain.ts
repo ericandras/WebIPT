@@ -1,12 +1,13 @@
 import { OptionField } from "../interfaces/chain";
 
-const interfaceOptions = ['enp0s3', 'enp0s8'];
+const interfaceOptions = ['enp0s3', 'enp0s8']; 
+const protocolOptions = ['tcp', 'udp', 'icmp'];
 
 const optionsFieldLiteral = [  
   {
     command: '-o', 
     type: 'select',
-    options: ['enp0s3', 'enp0s8'],
+    options: interfaceOptions,
     placeholder: 'eth0',
     title: 'interface',
     info: 'Define a interface de saída pela qual o pacote será roteado.'
@@ -15,7 +16,7 @@ const optionsFieldLiteral = [
   command: '-p', 
   type: 'select',
   placeholder: 'tcp',
-  options: ['tcp', 'udp', 'icmp'],
+  options: protocolOptions,
   title: 'protocolo', 
   info: 'Especifica o protocolo de transporte.'
 },
@@ -74,7 +75,7 @@ const optionsFieldLiteral = [
   command: '--to-destination', 
   type: 'text',
   placeholder: '192.168.1.101:80',
-  title: 'IP de destino',
+  title: 'IP de redirecionamento',
   info: 'Especifica o endereço IP de destino.'
 },
 {
