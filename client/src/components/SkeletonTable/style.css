@@ -1,4 +1,4 @@
-.main-info{
+  .main-info{
     background-color: var(--second-bg-color);
     width: 70%;
     height: 80vh;
@@ -12,6 +12,8 @@
     color: var(--font-color-p);
     font-size: 22px;
     position: relative;
+    min-width: 1000px;
+    min-height: 600px;
   }
 
 
@@ -20,4 +22,8 @@ h1.title-chain {
     font-size: 60px;
     padding: 0px;
     line-height: 60px;
+}
+
+.container {
+  height: 100%;
 }

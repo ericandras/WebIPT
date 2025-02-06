@@ -3,6 +3,7 @@ nav{
     position: absolute;
     left: 0;
     width: 10%;
+    min-width: 140px;
 }
 
 .link{
@@ -24,6 +25,12 @@ nav{
     border-left: 0px;
     box-sizing: border-box;
 }
+
+@media (max-width: 1370px) {
+    .link {
+        padding: 30px;
+    }
+  }
 
 .link:hover{
     background-color:var(--bg-hover);

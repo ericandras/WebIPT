@@ -43,7 +43,7 @@ export default function SkeletonTable({title, chainOptions} : Props) {
 
    return (
     <section className="main-info">
-    <div>
+    <div className="container">
       <AddRuleButton selectedChain={selectedChain} chainOptions={chainOptions} table={table}/>
       <h1 className="title-chain">{title}</h1>
       <div className="conteudo">
