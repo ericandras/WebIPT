@@ -24,7 +24,7 @@ export default function SkeletonTable({title, chainOptions} : Props) {
 
   const selectedIterface = "enp0s3"
 
-  const table = `iptables -t nat -L ${selectedChain.toUpperCase()}`;
+  const table = `iptables -t nat -L ${selectedChain.toUpperCase()} -n`;
 
   useEffect(() => {
     emitMessage(table);
