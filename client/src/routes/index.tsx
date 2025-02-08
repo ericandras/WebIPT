@@ -1,9 +1,7 @@
-//@ts-nocheck
-
+import Filter from "../pages/Filter";
+import Mangle from "../pages/Mangle";
 import Nat from "../pages/Nat";
-import Raw from "../components/Raw";
-import Mangle from "../components/Mangle";
-import Filter from "../components/Filter";
+import Raw from "../pages/Raw";
 import { useRoute } from "./RoutesProvider";
 
 
