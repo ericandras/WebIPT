@@ -13,27 +13,28 @@ interface Props {
 export default function({formItens, handle, newRule} : Props) {
   return <form className="render-rule-itens"> 
     {formItens.map((item, index) => {
+      const existingRule = newRule.find(rule => rule&&rule.command === item.command);
       switch (item.type) {
         case 'select':
-          return <Dropdown
+            return <Dropdown
             key={index}
             options={item.options??[]} 
             onSelect={(val) => handle(index, item.command, val)} 
-            value={newRule[index]&&newRule[index].value ? newRule[index].value : ''}
+            value={existingRule ? existingRule.value : ''}
             placeholder={item.title}
-          />
+            />
         case 'select/text':
           return <DropdownInput 
             key={index}    
             options={item.options??[]} 
-            value={newRule[index]&&newRule[index].value ? newRule[index].value : ''} 
+            value={existingRule ? existingRule.value : ''} 
             onSelect={(val) => handle(index,item.command, val)} 
             placeholder={item.title}
             />
         case 'text':
-          return <Input key={index} value={newRule[index]&&newRule[index].value ? newRule[index].value : ''} onChange={(val) => handle(index, item.command, val)} placeholder={item.title} />
+          return <Input key={index} value={existingRule ? existingRule.value : ''} onChange={(val) => handle(index, item.command, val)} placeholder={item.title} />
         case 'checkbox': 
-          return <Checkbox key={index} value={newRule[index]&&newRule[index].value ? newRule[index].value : ''} title={item.title} onSelect={(val) => handle(index, item.command, val ? item.command : '')} />
+          return <Checkbox key={index} value={existingRule ? existingRule.value : ''} title={item.title} onSelect={(val) => handle(index, item.command, val ? item.command : '')} />
       }
     })}
   </form>

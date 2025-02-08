@@ -9,9 +9,10 @@ interface Props {
 const Input = forwardRef<HTMLInputElement, Props>(
   ({ value = '', onChange, placeholder = '...' }, ref) => {
   const [val, setValue] = useState<string>(value)
-
+  console.log('value', val)
   useEffect(() => {
     if(val != value) {
+      console.log('value', value)
       setValue(value)
     }
   }, [value])

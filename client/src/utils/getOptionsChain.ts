@@ -1,7 +1,14 @@
 import { OptionField } from "../interfaces/chain";
 
-const interfaceOptions = ['enp0s3', 'enp0s8']; 
-const protocolOptions = ['tcp', 'udp', 'icmp'];
+const interfaceOptions: { value: string }[] = [
+  { value: 'enp0s3' },
+  { value: 'enp0s8' }
+];
+const protocolOptions: { value: string }[] = [
+  { value: 'tcp' },
+  { value: 'udp' },
+  { value: 'icmp' }
+];
 
 const optionsFieldLiteral = [  
   {
@@ -18,14 +25,26 @@ const optionsFieldLiteral = [
   placeholder: 'tcp',
   options: protocolOptions,
   title: 'protocolo', 
-  info: 'Especifica o protocolo de transporte.'
-},
-{
-  command: '--dport', 
-  type: 'text',
-  placeholder: '80',
-  title: 'porta de destino',
-  info: 'Especifica a porta de destino.'
+  info: 'Especifica o protocolo de transporte.',
+  optional: [
+    {
+      command: '--dport', 
+      type: 'text',
+      placeholder: '80',
+      title: 'porta de destino',
+      info: 'Especifica a porta de destino.',
+      requirement: (e) => e.includes('-p tcp') || e.includes('-p tcp')
+    },
+    {
+      command: '--sport', 
+      type: 'text',
+      placeholder: '20256',
+      title: 'Porta de origem',
+      info: 'Define a porta de origem.',
+      requirement: (e) => (e.includes('-p tcp') || e.includes('-p tcp')) // qual as outras condições para --sport?
+    },
+    
+  ]
 },
 {
   command: '-d',
@@ -52,7 +71,7 @@ const optionsFieldLiteral = [
 {
   command: '--to-source', 
   type: 'select/text',
-  options: ['10.12.1.10'], // trocar para apenas text depois
+  options: [{value:'10.12.1.10'}], // trocar para apenas text depois
   placeholder: '203.0.113.1',
   title: 'IP substituido',
   info: 'Usado com o target SNAT para especificar o IP de origem que será substituído.',
@@ -62,12 +81,14 @@ const optionsFieldLiteral = [
       type: 'checkbox',
       title: '--random?',
       info: 'Realiza a tradução do IP de origem de forma aleatória.',
+      requirement: (e) => !e.includes('--persistent')
     },
     {  
       command: '--persistent',
       type: 'checkbox',
       title: '--persistent',
-      info: 'Mantém o mesmo IP de origem traduzido para conexões consecutivas.'
+      info: 'Mantém o mesmo IP de origem traduzido para conexões consecutivas.',
+      requirement: (e) => !e.includes('--random')
     },
   ],
 },
@@ -78,13 +99,21 @@ const optionsFieldLiteral = [
   title: 'IP de redirecionamento',
   info: 'Especifica o endereço IP de destino.'
 },
+
 {
-  command: '--sport', 
-  type: 'text',
-  placeholder: '20256',
-  title: 'Porta de origem',
-  info: 'Define a porta de origem.'
-},
+  command: '--reject-with',
+  type: 'select',
+  title: 'tipo de rejeição',
+  info: 'Define qual tipo de resposta será enviada ao remetente do pacote rejeitado.',
+  options: [
+    { value: 'icmp-net-unreachable' },
+    { value: 'icmp-host-unreachable' },
+    { value: 'icmp-port-unreachable', requirement: (e) =>  e.includes('-p udp') },
+    { value: 'icmp-proto-unreachable' },
+    { value: 'icmp-admin-prohibited' },
+    { value: 'tcp-reset', requirement : (e) =>  e.includes('-p tcp') },
+    ]
+}
 
 ] as const satisfies OptionField[];
 

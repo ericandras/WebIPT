@@ -1,5 +1,10 @@
 //  Definição do tipo de chave permitido
-export type ChainKey = 'output' | 'postrouting' | 'prerouting';
+export type ChainKey = 'output' | 'postrouting' | 'prerouting' | 'input' | 'forward';
+
+export interface options {
+  value: string;
+  requirement?: (textRule: string) => boolean;
+}
 
 export interface OptionField {
   command: string;
@@ -7,8 +12,9 @@ export interface OptionField {
   placeholder?: string;
   title: string;
   info: string;
-  options?: string[]; // Usado para campos do tipo 'select' ou 'select/text'
+  options?: options[]; // Usado para campos do tipo 'select' ou 'select/text'
   optional?: OptionField[]; // Permite opções aninhadas dentro de outras
+  requirement?: (textRule: string) => boolean;
 }
 
 // Tipagem para uma regra dentro de uma cadeia (ex.: 'masquerade', 'snat')

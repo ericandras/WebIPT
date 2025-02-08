@@ -18,6 +18,7 @@ export default function({selectedChain, chainOptions, table, setIsModalOpen} : P
   const {socket, emitMessage} = useSocket();
 
   const [newRule, setNewRule] = useState<{command: string, value: string}[]>([]);
+  const [textRule, setTextRule] = useState('');
   const [selectedAction, setSelectedAction] = useState('');
   const [formItens, setFormItens] = useState<FormItem[]>([]);
 
@@ -29,20 +30,26 @@ export default function({selectedChain, chainOptions, table, setIsModalOpen} : P
       type: 'select',
       title: 'target',
       info: 'Ação a ser realizada',
-      options: Object.keys(chainOptions[selectedChain]!)
+      options: Object.keys(chainOptions[selectedChain]!).map((key) => ({value: key}))
     }
     form.push(targets)
     const extraOptions:{conditional: any; option: OptionField[]}[] = []
     if(newRule[0]&&newRule[0].value&&newRule[0].value!='') {
       for(let i =0; i < chainOptions[selectedChain]![newRule[0].value].required!.length; i++) {
-        if(chainOptions[selectedChain]![newRule[0].value].required![i].optional) {
-          extraOptions.push({conditional: form.length, option: chainOptions[selectedChain]![newRule[0].value].required![i].optional!})
+        const formItem = chainOptions[selectedChain]![newRule[0].value].required![i]
+        if(formItem.optional) {
+          extraOptions.push({conditional: form.length, option: formItem.optional!})
         }
-        form.push({ ...chainOptions[selectedChain]![newRule[0].value].required![i], required: true })
+        form.push({ ...formItem, options:formItem.options ? formItem.options.filter(e=> e.requirement==undefined || e.requirement(textRule)): undefined , required: true })
       }
+
       if(chainOptions[selectedChain]![newRule[0].value].optional) {
         for(let i =0; i < chainOptions[selectedChain]![newRule[0].value].optional!.length; i++) {
-          form.push({ ...chainOptions[selectedChain]![newRule[0].value].optional![i], required: false })
+          const formItem = chainOptions[selectedChain]![newRule[0].value].optional![i]
+          if(formItem.optional) {
+            extraOptions.push({conditional: form.length, option: formItem.optional!})
+          }
+          form.push({ ...formItem, options:formItem.options ? formItem.options.filter(e=> e.requirement==undefined || e.requirement(textRule)): undefined , required: false })
         }
       }
     }
@@ -50,7 +57,10 @@ export default function({selectedChain, chainOptions, table, setIsModalOpen} : P
     for (let i=0; i< extraOptions.length; i++) {
       if(newRule[extraOptions[i].conditional]&&newRule[extraOptions[i].conditional].value!= ''){
        for (let h=0; h<extraOptions[i].option.length; h++) {
-        form.push({...extraOptions[i].option[h], required: false})
+        const formItem = extraOptions[i].option[h]
+        if(formItem.requirement == undefined || formItem.requirement(textRule)) {
+          form.push({...formItem, required: false})
+        }
        } 
       }
     }
@@ -59,7 +69,7 @@ export default function({selectedChain, chainOptions, table, setIsModalOpen} : P
     setFormItens(form)
     // setSelectedAction()
 
-  }, [newRule, selectedChain]) 
+  }, [newRule, selectedChain, textRule]) 
 
 
   const makeCommand = (form: {command: string, value: string}[]) => {
@@ -96,7 +106,7 @@ const handleDropdownChange = (index:number, command: string, value:string) => {
   }
   setNewRule(updatedRule);
 
- 
+  setTextRule(makeCommand(updatedRule))
   console.log( makeCommand(updatedRule))
 };
 

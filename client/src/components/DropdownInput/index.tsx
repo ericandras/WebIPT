@@ -1,9 +1,10 @@
+import { options } from '../../interfaces/chain';
 import Input from '../Input';
 import './style.css'
 import { useEffect, useRef, useState } from 'react';
 
 interface Props {
-  options: string[],
+  options: options[],
   value: string,
   onSelect: (e:any) => void,
   placeholder: string
@@ -76,16 +77,16 @@ function DropdownInput({ options, onSelect, placeholder = "#", value} : Props) {
         <div
         className='option-wrapper'
         >
-          {options.filter(e => e !== selectedOption).map((option) => (
+          {options.filter(e => e.value !== selectedOption).map((option) => (
             <div
-              key={option}
+              key={option.value}
               className='option'
               onClick={() => {
                 setIsInput(false)
-                handleSelect(option)
+                handleSelect(option.value)
               }}
             >
-              {option}
+              {option.value}
             </div>
           ))}
 

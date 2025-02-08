@@ -17,6 +17,7 @@ interface Props {
 
 export default function SkeletonTable({title, chainOptions} : Props) {
   const chains = Object.keys(chainOptions) as ChainKey[]
+  if(chains.length === 0) return null;
 
   const {socket, emitMessage} = useSocket();
   const [rules, setRules] = useState<string[]>([]);
