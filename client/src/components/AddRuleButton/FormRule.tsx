@@ -77,7 +77,7 @@ export default function({selectedChain, chainOptions, table, setIsModalOpen} : P
     let command_end = ''
     for(let i=0; i< form.length; i++) {
       if(form[i]&&form[i].value!='') {
-        if((['-j', '--to-source', '--random', '--persistent', '--to-destination']).includes(form[i].command)) {
+        if((['-j', '--to-source', '--random', '--persistent', '--to-destination', '--log-prefix', '--log-level']).includes(form[i].command)) {
           command_end += form[i].command == form[i].value ? `${form[i].command} ` : `${form[i].command} ${form[i].value} `
         } else {
           command_start += form[i].command == form[i].value ? `${form[i].command} ` : `${form[i].command} ${form[i].value} `

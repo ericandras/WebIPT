@@ -28,17 +28,17 @@ const chainOptions: ChainOptions = {
   prerouting: {
     DNAT: {
       required: getOptionsChain(['--to-destination']),
-      optional: getOptionsChain(['-p','--dport','-d', '-s', '-i']),
+      optional: getOptionsChain(['-p','-d', '-s', '-i']),
       info: 'Altera o endereço IP de destino de um pacote (Destination NAT).'
     },
     ACCEPT: {
       required: [],
-      optional: getOptionsChain(['-p', '--dport', '-d', '-s', '-i']),
+      optional: getOptionsChain(['-p', '-d', '-s', '-i']),
       info: 'Permite o pacote sem realizar modificações.',
     },
     RETURN: {
       required: [],
-      optional: getOptionsChain(['-p', '--dport', '-d', '-s', '-i']),
+      optional: getOptionsChain(['-p', '-d', '-s', '-i']),
       info: 'Retorna o controle para a chain anterior, sem modificar o pacote.'
     }
   },

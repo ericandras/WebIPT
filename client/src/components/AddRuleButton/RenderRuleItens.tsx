@@ -11,7 +11,8 @@ interface Props {
 }
 
 export default function({formItens, handle, newRule} : Props) {
-  return <form className="render-rule-itens"> 
+  return <div className="render-rule-itens-container">
+    <form className="render-rule-itens"> 
     {formItens.map((item, index) => {
       const existingRule = newRule.find(rule => rule&&rule.command === item.command);
       switch (item.type) {
@@ -38,4 +39,5 @@ export default function({formItens, handle, newRule} : Props) {
       }
     })}
   </form>
+  </div>
 }

@@ -43,6 +43,11 @@ button.save-button {
   flex-direction: column;
   align-items: center;
 }
+.render-rule-itens-container{
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
 
 /* .save-button {
   z-index: 1;
