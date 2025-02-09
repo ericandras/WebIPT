@@ -74,16 +74,23 @@ fi
 
 # Instala o Yarn se necessário
 if ! command_exists yarn; then
-    echo -n "${BLUE}🌍 Adicionando repositório do Yarn..."
-    ( curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - &>/dev/null ) &
-    loading_bar
-    echo " ${GREEN}✅"
+# Adiciona a chave GPG do Yarn e configura o repositório usando o novo método
 
-    echo -n "${BLUE}📦 Instalando Yarn..."
-    ( apt-get update -y &>/dev/null && apt-get install -y yarn &>/dev/null ) &
-    loading_bar
-    echo " ${GREEN}✅"
-    echo "${GREEN}✅ Yarn instalado! Versão: $(yarn -v)"
+echo -n "${BLUE}🌍 Configurando o repositório do Yarn...${RESET}"
+
+# Cria o diretório para armazenar os keyrings, se ainda não existir
+mkdir -p /usr/share/keyrings
+
+# Baixa a chave GPG e salva no arquivo yarn-archive-keyring.gpg
+( curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | tee /usr/share/keyrings/yarn-archive-keyring.gpg > /dev/null ) &
+loading_bar
+echo " ${GREEN}✅${RESET}"
+
+# Adiciona o repositório do Yarn apontando para o keyring recém-criado
+( echo "deb [signed-by=/usr/share/keyrings/yarn-archive-keyring.gpg] https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list > /dev/null ) &
+loading_bar
+echo " ${GREEN}✅${RESET}"
+
 else
     echo "${GREEN}✅ Yarn já instalado. Versão: $(yarn -v)"
 fi
