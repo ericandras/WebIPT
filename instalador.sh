@@ -9,29 +9,24 @@ RESET=$(tput sgr0)
 
 # Função para exibir uma barra de carregamento
 loading_bar() {
-    # Captura o PID do último processo executado em background
     local pid=$!
     local delay=0.1
-    local max=30       # largura da barra
+    local max=30
     local i=0
     local bar=""
-    # Enquanto o processo estiver ativo...
+
     while kill -0 "$pid" 2>/dev/null; do
-        # Incrementa (de 0 até max) e reinicia quando atingir o máximo
         i=$(( (i + 1) % (max + 1) ))
-        # Cria a barra com 'i' caracteres preenchidos com '#'
         bar=$(printf "%-${i}s" "" | tr ' ' '#')
-        # Imprime a barra preenchida dentro de um campo de largura 'max'
         printf "\r[%-${max}s]" "$bar"
         sleep $delay
     done
-    # Quando o processo termina, imprime a barra completa e quebra a linha
     printf "\r[%-${max}s]\n" "$(printf '%0.s#' $(seq 1 $max))"
 }
 
 # Função para verificar se um comando existe
 command_exists() {
-    command -v "$1" >/dev/null 2>&1
+    command -v "$1" > /dev/null 2>&1
 }
 
 echo "${YELLOW}🔍 Verificando dependências...${RESET}"
@@ -39,16 +34,16 @@ echo "${YELLOW}🔍 Verificando dependências...${RESET}"
 # Atualiza pacotes se Node.js ou Yarn não estiverem instalados
 if ! command_exists node || ! command_exists yarn; then
     echo -n "${BLUE}🔄 Atualizando pacotes do sistema..."
-    ( apt-get update -y &>/dev/null && apt-get upgrade -y &>/dev/null ) &
+    ( sudo apt-get update -y > /dev/null 2>&1 && sudo apt-get upgrade -y > /dev/null 2>&1 ) &
     loading_bar
     echo " ${GREEN}✅"
 fi
 
 # Instala dependências do sistema (se não estiverem instaladas)
 for pkg in curl gnupg iptables; do
-    if ! dpkg -s "$pkg" &>/dev/null; then
+    if ! dpkg -s "$pkg" > /dev/null 2>&1; then
         echo -n "${BLUE}📦 Instalando $pkg..."
-        ( apt-get install -y "$pkg" &>/dev/null ) &
+        ( sudo apt-get install -y "$pkg" > /dev/null 2>&1 ) &
         loading_bar
         echo " ${GREEN}✅"
     else
@@ -59,12 +54,12 @@ done
 # Instala Node.js se não estiver presente
 if ! command_exists node; then
     echo -n "${BLUE}🌍 Adicionando repositório do Node.js..."
-    ( curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - &>/dev/null ) &
+    ( curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo bash - > /dev/null 2>&1 ) &
     loading_bar
     echo " ${GREEN}✅"
 
     echo -n "${BLUE}📦 Instalando Node.js..."
-    ( apt-get install -y nodejs &>/dev/null ) &
+    ( sudo apt-get install -y nodejs > /dev/null 2>&1 ) &
     loading_bar
     echo " ${GREEN}✅"
     echo "${GREEN}✅ Node.js instalado! Versão: $(node -v)"
@@ -74,23 +69,23 @@ fi
 
 # Instala o Yarn se necessário
 if ! command_exists yarn; then
-# Adiciona a chave GPG do Yarn e configura o repositório usando o novo método
+    echo -n "${BLUE}🌍 Configurando o repositório do Yarn...${RESET}"
 
-echo -n "${BLUE}🌍 Configurando o repositório do Yarn...${RESET}"
+    sudo mkdir -p /usr/share/keyrings
 
-# Cria o diretório para armazenar os keyrings, se ainda não existir
-mkdir -p /usr/share/keyrings
+    ( curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo tee /usr/share/keyrings/yarn-archive-keyring.gpg > /dev/null 2>&1 ) &
+    loading_bar
+    echo " ${GREEN}✅${RESET}"
 
-# Baixa a chave GPG e salva no arquivo yarn-archive-keyring.gpg
-( curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | tee /usr/share/keyrings/yarn-archive-keyring.gpg > /dev/null ) &
-loading_bar
-echo " ${GREEN}✅${RESET}"
+    ( echo "deb [signed-by=/usr/share/keyrings/yarn-archive-keyring.gpg] https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list > /dev/null 2>&1 ) &
+    loading_bar
+    echo " ${GREEN}✅${RESET}"
 
-# Adiciona o repositório do Yarn apontando para o keyring recém-criado
-( echo "deb [signed-by=/usr/share/keyrings/yarn-archive-keyring.gpg] https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list > /dev/null ) &
-loading_bar
-echo " ${GREEN}✅${RESET}"
-
+    echo -n "${BLUE}📦 Instalando Yarn..."
+    ( sudo apt-get update -y > /dev/null 2>&1 && sudo apt-get install -y yarn > /dev/null 2>&1 ) &
+    loading_bar
+    echo " ${GREEN}✅"
+    echo "${GREEN}✅ Yarn instalado! Versão: $(yarn -v)"
 else
     echo "${GREEN}✅ Yarn já instalado. Versão: $(yarn -v)"
 fi
@@ -98,7 +93,7 @@ fi
 # Instala dependências do projeto (diretório client)
 if [ -d "client" ] && [ -f "client/package.json" ]; then
     echo -n "${BLUE}📂 Instalando dependências do Yarn em client/..."
-    ( cd client && yarn install &>/dev/null ) &
+    ( cd client && yarn install --silent > /dev/null 2>&1 ) &
     loading_bar
     echo " ${GREEN}✅"
 else
@@ -108,7 +103,7 @@ fi
 # Instala dependências do projeto (diretório server)
 if [ -d "server" ] && [ -f "server/package.json" ]; then
     echo -n "${BLUE}📂 Instalando dependências do Yarn em server/..."
-    ( cd server && yarn install &>/dev/null ) &
+    ( cd server && yarn install --silent > /dev/null 2>&1 ) &
     loading_bar
     echo " ${GREEN}✅"
 else
