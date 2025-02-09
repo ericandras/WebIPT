@@ -25,7 +25,7 @@ export default function SkeletonTable({title, chainOptions} : Props) {
 
   const selectedIterface = "enp0s3"
 
-  const table = `iptables -t nat -L ${selectedChain.toUpperCase()} -n`;
+  const table = `iptables -t ${title.toLowerCase()} -L ${selectedChain.toUpperCase()} -n`;
 
   useEffect(() => {
     emitMessage(table);
@@ -45,7 +45,7 @@ export default function SkeletonTable({title, chainOptions} : Props) {
    return (
     <section className="main-info">
     <div className="container">
-      <AddRuleButton selectedChain={selectedChain} chainOptions={chainOptions} table={table}/>
+      <AddRuleButton selectedChain={selectedChain} chainOptions={chainOptions} table={title.toLowerCase()}/>
       <h1 className="title-chain">{title}</h1>
       <div className="conteudo">
         <ChainButtons selected={selectedChain} onSelect={setSelectedChain} chains={chains}/>

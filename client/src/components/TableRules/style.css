@@ -25,23 +25,23 @@
   }
 
   .order-tr {
-    width: 5%;
+    min-width: 3vw;
     justify-content: center;
   }
   .target-tr {
-     min-width: 15%;
+     min-width: 9vw;
   }
   .prot-tr {
-     min-width: 15%;
+     min-width: 9vw;
   }
   .opt-tr {
-     min-width: 8%;
+     min-width: 6vw;
   }
   .source-tr {
-     min-width: 15%;
+     min-width: 9vw;
   }
   .destination-tr {
-     min-width: 30%;
+     min-width: 18vw;
   }
   .rule-table-body {
     margin: auto;
@@ -65,7 +65,7 @@
   }
 
   .rule-table-header .rule-tr:first-child {
-    width: 5%;
+    width: 3vw;
     text-align: center;
     justify-content: center;
   }

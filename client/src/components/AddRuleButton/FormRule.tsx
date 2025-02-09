@@ -73,7 +73,7 @@ export default function({selectedChain, chainOptions, table, setIsModalOpen} : P
 
 
   const makeCommand = (form: {command: string, value: string}[]) => {
-    let command_start = `iptables -t nat -A ${selectedChain.toUpperCase()} `
+    let command_start = `iptables -t ${table} -A ${selectedChain.toUpperCase()} `
     let command_end = ''
     for(let i=0; i< form.length; i++) {
       if(form[i]&&form[i].value!='') {
@@ -91,7 +91,7 @@ const handleSave = () => {
   setIsModalOpen(false);
   emitMessage(makeCommand(newRule));
   setTimeout(() => {
-    emitMessage(table);
+    emitMessage(`iptables -t ${table} -L ${selectedChain.toUpperCase()} -n`);
   }, 100)
 };
 
