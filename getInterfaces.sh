@@ -4,7 +4,7 @@
 # Obtém a lista de interfaces usando "ip -o link show"
 # O comando retorna linhas no formato: "N: interface: <flags> ..."
 # Aqui extraímos apenas o nome da interface (segunda coluna após o número)
-interfaces=( $(ip -o link show | awk -F': ' '{print $2}') )
+interfaces= $(ip -o link show | awk -F': ' '{print $2}') 
 
 # Exibe as interfaces encontradas, numerando-as
 echo "Interfaces de rede encontradas:"
