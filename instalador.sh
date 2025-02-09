@@ -21,7 +21,7 @@ loading_bar() {
         printf "\r[%-${max}s]" "$bar"
         sleep $delay
     done
-    printf " \r[%-${max}s]\n" "$(printf '%0.s#' $(seq 1 $max))"
+    printf "\r[%-${max}s]\n" "$(printf '%0.s#' $(seq 1 $max))"
 }
 
 # Função para verificar se um comando existe
@@ -33,10 +33,10 @@ echo "${YELLOW}Verificando dependências...${RESET}"
 
 # Atualiza pacotes se Node.js ou Yarn não estiverem instalados
 if ! command_exists node || ! command_exists yarn; then
-    echo -n "${BLUE} Atualizando pacotes do sistema..."
+    echo -n "${BLUE}Atualizando pacotes do sistema..."
     ( apt-get update -y > /dev/null 2>&1 && apt-get upgrade -y > /dev/null 2>&1 ) &
     loading_bar
-    echo " ${GREEN}"
+    echo "${GREEN}"
 fi
 
 # Instala dependências do sistema (se não estiverem instaladas)
@@ -47,7 +47,7 @@ for pkg in curl gnupg iptables; do
         loading_bar
         echo " ${GREEN}"
     else
-        echo "${GREEN} $pkg já está instalado."
+        echo "${GREEN}$pkg já está instalado."
     fi
 done
 
@@ -62,14 +62,14 @@ if ! command_exists node; then
     ( apt-get install -y nodejs > /dev/null 2>&1 ) &
     loading_bar
     echo " ${GREEN}"
-    echo "${GREEN} Node.js instalado! Versão: $(node -v)"
+    echo "${GREEN}Node.js instalado! Versão: $(node -v)"
 else
-    echo "${GREEN} Node.js já instalado. Versão: $(node -v)"
+    echo "${GREEN}Node.js já instalado. Versão: $(node -v)"
 fi
 
 # Instala o Yarn se necessário
 if ! command_exists yarn; then
-    echo -n "${BLUE} Configurando o repositório do Yarn...${RESET}"
+    echo -n "${BLUE}Configurando o repositório do Yarn...${RESET}"
 
     mkdir -p /usr/share/keyrings
 
@@ -85,14 +85,14 @@ if ! command_exists yarn; then
     ( apt-get update -y > /dev/null 2>&1 && apt-get install -y yarn > /dev/null 2>&1 ) &
     loading_bar
     echo " ${GREEN}"
-    echo "${GREEN} Yarn instalado! Versão: $(yarn -v)"
+    echo "${GREEN}Yarn instalado! Versão: $(yarn -v)"
 else
-    echo "${GREEN} Yarn já instalado. Versão: $(yarn -v)"
+    echo "${GREEN}Yarn já instalado. Versão: $(yarn -v)"
 fi
 
 # Instala dependências do projeto (diretório client)
 if [ -d "client" ] && [ -f "client/package.json" ]; then
-    echo "${BLUE} Instalando dependências do Yarn em client/..."
+    echo "${BLUE}Instalando dependências do Yarn em client/..."
     ( cd client && yarn install --silent > /dev/null 2>&1 ) &
     loading_bar
     echo " ${GREEN}"
@@ -102,7 +102,7 @@ fi
 
 # Instala dependências do projeto (diretório server)
 if [ -d "server" ] && [ -f "server/package.json" ]; then
-    echo "${BLUE} Instalando dependências do Yarn em server/..."
+    echo "${BLUE}Instalando dependências do Yarn em server/..."
     ( cd server && yarn install --silent > /dev/null 2>&1 ) &
     loading_bar
     echo "${GREEN}"
