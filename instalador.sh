@@ -34,7 +34,7 @@ echo "${YELLOW}🔍 Verificando dependências...${RESET}"
 # Atualiza pacotes se Node.js ou Yarn não estiverem instalados
 if ! command_exists node || ! command_exists yarn; then
     echo -n "${BLUE}🔄 Atualizando pacotes do sistema..."
-    ( sudo apt-get update -y > /dev/null 2>&1 && sudo apt-get upgrade -y > /dev/null 2>&1 ) &
+    ( apt-get update -y > /dev/null 2>&1 && apt-get upgrade -y > /dev/null 2>&1 ) &
     loading_bar
     echo " ${GREEN}✅"
 fi
@@ -43,7 +43,7 @@ fi
 for pkg in curl gnupg iptables; do
     if ! dpkg -s "$pkg" > /dev/null 2>&1; then
         echo -n "${BLUE}📦 Instalando $pkg..."
-        ( sudo apt-get install -y "$pkg" > /dev/null 2>&1 ) &
+        ( apt-get install -y "$pkg" > /dev/null 2>&1 ) &
         loading_bar
         echo " ${GREEN}✅"
     else
@@ -54,12 +54,12 @@ done
 # Instala Node.js se não estiver presente
 if ! command_exists node; then
     echo -n "${BLUE}🌍 Adicionando repositório do Node.js..."
-    ( curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo bash - > /dev/null 2>&1 ) &
+    ( curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - > /dev/null 2>&1 ) &
     loading_bar
     echo " ${GREEN}✅"
 
     echo -n "${BLUE}📦 Instalando Node.js..."
-    ( sudo apt-get install -y nodejs > /dev/null 2>&1 ) &
+    ( apt-get install -y nodejs > /dev/null 2>&1 ) &
     loading_bar
     echo " ${GREEN}✅"
     echo "${GREEN}✅ Node.js instalado! Versão: $(node -v)"
@@ -71,18 +71,18 @@ fi
 if ! command_exists yarn; then
     echo -n "${BLUE}🌍 Configurando o repositório do Yarn...${RESET}"
 
-    sudo mkdir -p /usr/share/keyrings
+    mkdir -p /usr/share/keyrings
 
-    ( curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo tee /usr/share/keyrings/yarn-archive-keyring.gpg > /dev/null 2>&1 ) &
+    ( curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | tee /usr/share/keyrings/yarn-archive-keyring.gpg > /dev/null 2>&1 ) &
     loading_bar
     echo " ${GREEN}✅${RESET}"
 
-    ( echo "deb [signed-by=/usr/share/keyrings/yarn-archive-keyring.gpg] https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list > /dev/null 2>&1 ) &
+    ( echo "deb [signed-by=/usr/share/keyrings/yarn-archive-keyring.gpg] https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list > /dev/null 2>&1 ) &
     loading_bar
     echo " ${GREEN}✅${RESET}"
 
     echo -n "${BLUE}📦 Instalando Yarn..."
-    ( sudo apt-get update -y > /dev/null 2>&1 && sudo apt-get install -y yarn > /dev/null 2>&1 ) &
+    ( apt-get update -y > /dev/null 2>&1 && apt-get install -y yarn > /dev/null 2>&1 ) &
     loading_bar
     echo " ${GREEN}✅"
     echo "${GREEN}✅ Yarn instalado! Versão: $(yarn -v)"
