@@ -33,7 +33,7 @@ const optionsFieldLiteral = [
       placeholder: '80',
       title: 'porta de destino',
       info: 'Especifica a porta de destino.',
-      requirement: (e) => e.includes('-p tcp') || e.includes('-p tcp')
+      requirement: (e) => e.includes('-p tcp') || e.includes('-p udp')
     },
     {
       command: '--sport', 
@@ -41,7 +41,7 @@ const optionsFieldLiteral = [
       placeholder: '20256',
       title: 'Porta de origem',
       info: 'Define a porta de origem.',
-      requirement: (e) => (e.includes('-p tcp') || e.includes('-p tcp')) // qual as outras condições para --sport?
+      requirement: (e) => (e.includes('-p tcp') || e.includes('-p udp')) // qual as outras condições para --sport?
     },
     {
       command: '--icmp-type',
@@ -56,7 +56,7 @@ const optionsFieldLiteral = [
                 { value: 'time-exceeded' },
                 { value: 'parameter-problem' }
       ],
-      requirement: (e) => (e.includes('-p icmp') && e.includes('-A INPUT')) // qual as outras condições para --sport?
+      requirement: (e) => (e.includes('-p icmp')) // qual as outras condições para --sport?
     },
   ]
 },
