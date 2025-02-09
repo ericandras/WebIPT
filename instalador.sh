@@ -21,7 +21,7 @@ loading_bar() {
         printf "\r[%-${max}s]" "$bar"
         sleep $delay
     done
-    printf "\r[%-${max}s]\n" "$(printf '%0.s#' $(seq 1 $max))"
+    printf " \r[%-${max}s]\n" "$(printf '%0.s#' $(seq 1 $max))"
 }
 
 # Função para verificar se um comando existe
@@ -29,7 +29,7 @@ command_exists() {
     command -v "$1" > /dev/null 2>&1
 }
 
-echo "${YELLOW}🔍 Verificando dependências...${RESET}"
+echo "${YELLOW}Verificando dependências...${RESET}"
 
 # Atualiza pacotes se Node.js ou Yarn não estiverem instalados
 if ! command_exists node || ! command_exists yarn; then
