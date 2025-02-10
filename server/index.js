@@ -62,7 +62,7 @@ io.on("connection", (socket) => {
 app.use(
   "/",
   createProxyMiddleware({
-    target: "http://localhost:5173",
+    target: "http://127.0.0.1:5173",
     changeOrigin: true,
     ws: true,
     logLevel: "debug" // Adiciona logs detalhados
