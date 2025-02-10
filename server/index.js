@@ -1,60 +1,73 @@
 import express from "express";
-import ht from "http"
-import path from "path";
-import { fileURLToPath } from 'url';
-import { Server } from "socket.io";
-import utilidade from './src/utilidade.js'
-import * as proc from 'child_process'
+import http from "http"; // Para criar servidor HTTP
+import { Server as SocketIOServer } from "socket.io";
+import cors from "cors";
+import { createProxyMiddleware } from "http-proxy-middleware";
+import dotenv from "dotenv";
 
-import 'dotenv/config'
+dotenv.config();
 
-const app = express()
-const server = ht.createServer(app);
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename);
+const app = express();
+const server = http.createServer(app);
+const io = new SocketIOServer(server, {
+  cors: {
+    origin: process.env.DEV ? "*" : `http://${process.env.IP}:3000`,
+    methods: ["GET", "POST"]
+  }
+});
 
-let messages = []
+app.use(cors());
+app.use(express.json());
 
-const logs = (...props) => { 
-  console.log('dev',process.env.DEV)
-  if (process.env.DEV) {
-  console.log(props) 
 
-} 
-}
+const allowedIPs = [
+  process.env.ALLOWED_IP
+];
 
-const io = new Server(server, {
-    cors: { origin: process.env.DEV ? '*' : `http://${process.env.IP}:3000`, methods: ["GET", "POST"] },
-    // cors: { origin: '*', methods: ["GET", "POST"] },
+const getClientIP = (req) => {
+  let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+  if (ip.includes(":")) ip = ip.split(":").pop(); // Remove "::ffff:" de IPv4 mapeado
+  return ip;
+};
+
+app.use((req, res, next) => {
+  const userIP = getClientIP(req);
+  console.log("Tentativa de acesso do IP:", userIP);
+
+  if (allowedIPs.includes(userIP)) {
+    console.log("Acesso permitido:", userIP);
+    next();
+  } else {
+    console.log("Acesso negado:", userIP);
+    res.status(403).json({ error: "Acesso Negado" });
+  }
+});
+
+app.use(
+  "/",
+  createProxyMiddleware({
+    target: "http://localhost:5173", // Porta do Vite
+    changeOrigin: true,
+    ws: true
+  })
+);
+
+// 🚀 **WebSocket**
+io.on("connection", (socket) => {
+  const userIP = socket.handshake.address;
+  console.log(`Cliente conectado: ${socket.id} - IP: ${userIP}`);
+
+  socket.on("send_message", (msg) => {
+    console.log("Mensagem recebida:", msg);
+    socket.broadcast.emit("receive_message", msg);
   });
- 
-  
-  io.on("connection", (socket) => {
-    logs(`a user connected o ${socket.id}`);
-    
-    socket.on("input_command", (msg) => {
-      logs("recebeu:", msg)
-        const start = proc.spawn(msg.command,{cwd: `/${msg.path??''}`,shell: true})
-    start.stdout.on('data', (data) => {
-      const output = data.toString().split('\n').filter(line => line.trim() != "")
-      logs("input:",msg.command)
-      logs("output:",data.toString())
-      logs("treated_output:",output)
-      socket.emit("output_command", {lines: output}); 
-    });
 
-    start.stderr.on("data", data => {
-      console.error('data error:',data.toString())
-    })
-
-    start.on('close', (code) => {
-      logs("input:",msg.command)
-      logs(`Command finished with exit code: ${code}`);
-    });
-      
-    });
+  socket.on("disconnect", () => {
+    console.log(`Cliente desconectado: ${socket.id}`);
   });
+});
 
-  server.listen(4000, process.env.IP, () => {
-    logs(`listening on http://${process.env.IP}:4000`);
-  });
+// Inicia o servidor na porta 3000
+server.listen(4000, process.env.IP, () => {
+  console.log(`Servidor rodando em http://${process.env.IP}:3000`);
+});
