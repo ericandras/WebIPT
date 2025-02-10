@@ -112,8 +112,16 @@ fi
 
 echo "${GREEN}Instalação concluída com sucesso!${RESET}"
 
-script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-echo "alias webipt=\"$script_dir/webipt.sh\"" >> ~/.bashrc
-source ~/.bashrc
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+echo "alias webipt=\"$script_dir/webipt.sh\"" >> ~/.profile
+if [ -n "$BASH_VERSION" ]; then
+    echo "alias webipt=\"$script_dir/webipt.sh\"" >> ~/.bashrc
+    echo "Alias adicionado ao ~/.bashrc para Bash."
+fi
+if [ -n "$BASH_VERSION" ]; then
+    . ~/.bashrc
+else
+    . ~/.profile
+fi
 
-echo "webipt adicionado ao path. Para usar, digite 'webipt' no terminal."
+echo "webipt adicionado ao PATH. chame 'webipt' para usar o comando."
