@@ -43,14 +43,6 @@ app.use((req, res, next) => {
   }
 });
 
-app.use(
-  "/",
-  createProxyMiddleware({
-    target: "http://localhost:5173", // Porta do Vite
-    changeOrigin: true,
-    ws: true
-  })
-);
 
 // 🚀 **WebSocket**
 io.on("connection", (socket) => {
@@ -66,6 +58,16 @@ io.on("connection", (socket) => {
     console.log(`Cliente desconectado: ${socket.id}`);
   });
 });
+
+app.use(
+  "/",
+  createProxyMiddleware({
+    target: "http://localhost:5173",
+    changeOrigin: true,
+    ws: true,
+    logLevel: "debug" // Adiciona logs detalhados
+  })
+);
 
 // Inicia o servidor na porta 4000
 server.listen(4000, process.env.IP, () => {
