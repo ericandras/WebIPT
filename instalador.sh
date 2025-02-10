@@ -111,3 +111,9 @@ else
 fi
 
 echo "${GREEN}Instalação concluída com sucesso!${RESET}"
+
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+echo "alias webipt=\"$script_dir/webipt.sh\"" >> ~/.bashrc
+source ~/.bashrc
+
+echo "webipt adicionado ao path. Para usar, digite 'webipt' no terminal."

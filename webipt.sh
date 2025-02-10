@@ -2,9 +2,7 @@
 # Script para selecionar interface de rede e salvar seu IP no arquivo .env
 
 # Obtém a lista de interfaces usando "ip -o link show"
-# O comando retorna linhas no formato: "N: interface: <flags> ..."
-# Aqui extraímos apenas o nome da interface (segunda coluna após o número)
-interfaces= $(ip -o link show | awk -F': ' '{print $2}') 
+interfaces=( $(ip -o link show | awk -F': ' '{print $2}') )
 
 # Exibe as interfaces encontradas, numerando-as
 echo "Interfaces de rede encontradas:"
@@ -33,7 +31,6 @@ fi
 echo "Interface selecionada: $interface_escolhida"
 
 # Obtém o endereço IPv4 da interface selecionada
-# O comando "ip -o -f inet addr show" retorna linhas com o IP no quarto campo
 ip_address=$(ip -o -f inet addr show "$interface_escolhida" | awk '{print $4}' | cut -d/ -f1)
 
 # Verifica se foi encontrado um IP
