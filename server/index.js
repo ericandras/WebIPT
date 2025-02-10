@@ -67,7 +67,7 @@ io.on("connection", (socket) => {
   });
 });
 
-// Inicia o servidor na porta 3000
+// Inicia o servidor na porta 4000
 server.listen(4000, process.env.IP, () => {
-  console.log(`Servidor rodando em http://${process.env.IP}:3000`);
+  console.log(`Servidor rodando em http://${process.env.IP}:4000`);
 });
