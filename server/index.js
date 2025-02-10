@@ -15,25 +15,32 @@ const __dirname = path.dirname(__filename);
 
 let messages = []
 
+const logs = (...props) => { 
+  console.log('dev',process.env.DEV)
+  if (process.env.DEV) {
+  console.log(props) 
+
+} 
+}
 
 const io = new Server(server, {
-    // cors: { origin: `http://${process.env.IP}:3000`, methods: ["GET", "POST"] },
-    cors: { origin: '*', methods: ["GET", "POST"] },
+    cors: { origin: process.env.DEV ? '*' : `http://${process.env.IP}:3000`, methods: ["GET", "POST"] },
+    // cors: { origin: '*', methods: ["GET", "POST"] },
   });
-
+ 
   
   io.on("connection", (socket) => {
-    console.log(`a user connected o ${socket.id}`);
+    logs(`a user connected o ${socket.id}`);
     
     socket.on("input_command", (msg) => {
-      console.log("recebeu:", msg)
+      logs("recebeu:", msg)
         const start = proc.spawn(msg.command,{cwd: `/${msg.path??''}`,shell: true})
     start.stdout.on('data', (data) => {
       const output = data.toString().split('\n').filter(line => line.trim() != "")
-      console.log("input:",msg.command)
-      console.log("output:",data.toString())
-      console.log("treated_output:",output)
-      socket.emit("output_command", {lines: output});
+      logs("input:",msg.command)
+      logs("output:",data.toString())
+      logs("treated_output:",output)
+      socket.emit("output_command", {lines: output}); 
     });
 
     start.stderr.on("data", data => {
@@ -41,13 +48,13 @@ const io = new Server(server, {
     })
 
     start.on('close', (code) => {
-      console.log("input:",msg.command)
-      console.log(`Command finished with exit code: ${code}`);
+      logs("input:",msg.command)
+      logs(`Command finished with exit code: ${code}`);
     });
       
     });
   });
 
   server.listen(4000, process.env.IP, () => {
-    console.log(`listening on http://${process.env.IP}:4000`);
+    logs(`listening on http://${process.env.IP}:4000`);
   });
