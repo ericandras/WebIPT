@@ -127,11 +127,13 @@ verify_env_files() {
 }
 
 start_server_loop() {
-    cd server || exit 1
+    script_dir="$(cd "$(dirname "$0")" && pwd)"
+    echo "ok $script_dir"
+    cd $script_dir/server || exit 1
     while true; do
         yarn start> /dev/null 2>&1  &
         yarn_pid=$!
-        echo "server: $yarn_pid" >> ../.yarn_pids.pid
+        echo "server: $yarn_pid" >> $script_dir/.yarn_pids.pid
         wait "$yarn_pid"
         ret=$?
         
@@ -147,24 +149,28 @@ start_server_loop() {
 
 start() {
     sleep 0.2
+    script_dir="$(cd "$(dirname "$0")" && pwd)"
+    cd $script_dir
     export -f start_server_loop
-    nohup bash -c "start_server_loop" > /dev/null 2>&1 &
+    nohup bash -c "start_server_loop"> /dev/null 2>&1 &
     server_pid=$!
-    cd client
+    cd $script_dir/client
     nohup yarn dev> /dev/null 2>&1 &
     client_pid=$!
     cd ..
-    echo "server_wrapper: $server_pid" > .yarn_pids.pid
-    echo "client: $client_pid" >> .yarn_pids.pid
+    echo "server_wrapper: $server_pid" > $script_dir/.yarn_pids.pid
+    echo "client: $client_pid" >> $script_dir/.yarn_pids.pid
 
     ip=$(read_env_value "$(cd "$(dirname "$0")" && pwd)/client/.env" "VITE_IP")
+    allowed_ip=$(read_env_value "$(cd "$(dirname "$0")" && pwd)/server/.env" "ALLOWED_IP")
 
-    echo "Processo iniciado! Acesse em: http://$ip:3000"
+    echo "Processo iniciado! Acesse em: http://$ip:4000 na maquina de ip:$allowed_ip"
     exit 0
 }
 
 stop() {
-  PID_FILE=".yarn_pids.pid"
+  script_dir="$(cd "$(dirname "$0")" && pwd)"
+  PID_FILE="$script_dir/.yarn_pids.pid"
 
   if [ -f "$PID_FILE" ]; then
       # Para cada linha no arquivo, extrai o nome do processo e o PID
