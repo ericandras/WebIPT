@@ -40,23 +40,26 @@ reconfigure() {
         exit 1
     fi
 
-    echo "Endereço IP encontrado: $ip_address"
-
     # Cria (ou sobrescreve) o arquivo .env com a variável IP
+
+    read -p "Escreva o ip permitido para acessar o serviço" allowed_ip
 
     script_dir="$(cd "$(dirname "$0")" && pwd)"
     (
         echo "INTERFACE=$interface_escolhida"
         echo "IP=$ip_address"
         echo "DEV=false"
+        echo "ALLOWED_IP=$allowed_ip"
     ) > "$script_dir/server/.env"
+
     (
         echo "INTERFACE=$interface_escolhida"
         echo "VITE_IP=$ip_address"
         echo "VITE_IP_SERVER=$ip_address"
     ) > "$script_dir/client/.env"
 
-    echo "Arquivo .env criado com a linha: IP=$ip_address"
+    echo "IP do processo definido como $ip_address"
+    
 }
 
 read_env_value() {
@@ -213,7 +216,7 @@ case "$1" in
         stop
         ;;
     --reconfigure)
-        stop
+        reconfigure
         ;;
      --help)
         show_help
