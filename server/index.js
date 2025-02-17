@@ -4,6 +4,7 @@ import { Server as SocketIOServer } from "socket.io";
 import cors from "cors";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import dotenv from "dotenv";
+import * as proc from 'child_process'
 
 dotenv.config();
 
