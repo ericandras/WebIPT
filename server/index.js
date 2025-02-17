@@ -43,6 +43,12 @@ app.use((req, res, next) => {
   }
 });
 
+const logs = (...props) => { 
+  console.log('dev',process.env.DEV)
+  if (process.env.DEV) {
+  console.log(props)
+}
+}
 
 // 🚀 **WebSocket**
 io.on("connection", (socket) => {
