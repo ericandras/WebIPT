@@ -11,7 +11,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new SocketIOServer(server, {
   cors: {
-    origin: process.env.DEV ? "*" : `http://${process.env.IP}:3000`,
+    origin: process.env.DEV ? "*" : `http://${process.env.IP}:4000`,
     methods: ["GET", "POST"]
   }
 });
@@ -56,6 +56,26 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log(`Cliente desconectado: ${socket.id}`);
+  });
+
+  socket.on("input_command", (msg) => {
+    logs("recebeu:", msg)
+      const start = proc.spawn(msg.command,{cwd: `/${msg.path??''}`,shell: true})
+  start.stdout.on('data', (data) => {
+    const output = data.toString().split('\n').filter(line => line.trim() != "")
+    logs("input:",msg.command)
+    logs("output:",data.toString())
+    logs("treated_output:",output)
+    socket.emit("output_command", {lines: output}); 
+  });
+  start.stderr.on("data", data => {
+    console.error('data error:',data.toString())
+  })
+  start.on('close', (code) => {
+    logs("input:",msg.command)
+    logs(`Command finished with exit code: ${code}`);
+  });
+    
   });
 });
 
