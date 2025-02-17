@@ -56,7 +56,7 @@ const optionsFieldLiteral = [
                 { value: 'time-exceeded' },
                 { value: 'parameter-problem' }
       ],
-      requirement: (e) => (e.includes('-p icmp')) // qual as outras condições para --sport?
+      requirement: (e) => (e.includes('-p icmp') && !(e.includes('-j RETURN')))
     },
   ]
 },
@@ -164,6 +164,50 @@ debug = 7: Detalhes de depuração para análise técnica
   type: 'checkbox',
   title: 'registrar sequência TCP',
   info: 'Registra o número de sequência TCP dos pacotes logados'
+},
+{
+  command: '--set-mark',
+  title: 'classificação do pacote',
+  type: 'text',
+  info: 'Define um valor numérico para classificar pacotes.'
+},
+{
+  command: '--ttl-set',
+  title: 'TTL',
+  type: 'text',
+  info: 'Modifica o valor TTL do pacote.'
+},
+{
+  command: '--set-tos',
+  title: 'TOS',
+  type: 'text',
+  info: 'Modifica o campo TOS no cabeçalho IP.'
+},
+{
+  command: '--set-dscp',
+  title: 'DSCP',
+  type: 'text',
+  info: 'Define a classe de serviço DSCP.'
+},
+{
+  command: '--ecn-tcp-remove',
+  title: 'ECN',
+  type: 'checkbox',
+  info: 'Remove os bits ECN do cabeçalho tcp (Explicit Congestion Notification).'
+},
+{
+  command: '--selctx',
+  title: 'ctx de segurança',
+  type: 'text',
+  info: 'Define um contexto de segurança.',
+  placeholder: 'user:t_object:type:level'
+},
+{
+  command: '--set-connmark',
+  title: 'ctx de segurança',
+  type: 'text',
+  info: 'Define um valor numérico para classificar pacotes de conexões internas.',
+  placeholder: 'user:t_object:type:level'
 }
 
 ] as const satisfies OptionField[];
