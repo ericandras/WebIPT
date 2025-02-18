@@ -26,7 +26,7 @@ loading_bar() {
 
 # Função para verificar se um comando existe
 command_exists() {
-    return command -v "$1" 
+    command -v "$1" 
 }
 
 echo "${YELLOW}Verificando dependências...${RESET}"
