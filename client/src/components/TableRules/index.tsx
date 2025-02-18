@@ -17,6 +17,7 @@ export default function({rules}:Props) {
         <div className={"rule-tr " + classtr[3]}>Opt</div>
         <div className={"rule-tr " + classtr[4]}>Source</div>
         <div className={"rule-tr " + classtr[5]}>Destination</div>
+        {/* <div className={"rule-tr "}>...</div> */}
         <div className={"rule-tr " + "edit-tr"}>Edit</div>
     </div>
 

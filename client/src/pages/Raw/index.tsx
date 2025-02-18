@@ -49,7 +49,7 @@ function Raw() {
       }
     }
   }
-  return <SkeletonTable title="FILTER" chainOptions={chainOptions}/>
+  return <SkeletonTable title="RAW" chainOptions={chainOptions}/>
 }
 
 export default Raw
