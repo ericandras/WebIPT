@@ -61,11 +61,10 @@ h1{
 ::-webkit-scrollbar-thumb {
   background-color: var(--primary-bd-color); 
   border-radius: 5px;     
-  border: 2px solid green; 
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #555; 
+  background-color: var(--primary-bd-color);  
 }
 
 html, body, * {
