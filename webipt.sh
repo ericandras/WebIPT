@@ -173,20 +173,29 @@ stop() {
   PID_FILE="$script_dir/.yarn_pids.pid"
 
   if [ -f "$PID_FILE" ]; then
-      # Para cada linha no arquivo, extrai o nome do processo e o PID
       while IFS= read -r line; do
-          # Se o formato for "nome: PID", extraímos:
           process=$(echo "$line" | cut -d: -f1)
           pid=$(echo "$line" | cut -d: -f2 | tr -d ' ')
-          pkill -P "$pid"
-          if [ ! $? -eq 0 ]; then
-              echo "Falha ao interromper o processo '$process'."
-          fi
+
+          # Mata os filhos primeiro
+          pkill -P "$pid" 2>/dev/null || echo "⚠️ Falha ao matar processos filhos de '$process'. Continuando..."
+
+          # Mata o processo pai
+          kill "$pid" 2>/dev/null || echo "⚠️ Falha ao interromper '$process' (PID: $pid). Continuando..."
+          
       done < "$PID_FILE"
-      # Remove o arquivo de PIDs após interromper os processos
-      rm "$PID_FILE"
+
+      # Aguarda um tempo para garantir que os processos foram finalizados
+      sleep 0.5
+
+      # Remove o arquivo de PIDs APÓS tentar matar todos os processos
+      rm -f "$PID_FILE"
+      echo "✅ Arquivo de PIDs removido: $PID_FILE"
+  else
+      echo "ℹ️ Nenhum processo encontrado para interromper."
   fi
 }
+
 
 show_help() {
     echo "Uso: webipt [--help] [start] [stop] [--reconfigure]"
