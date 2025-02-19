@@ -23,7 +23,7 @@ export default function({rules}:Props) {
 
     <div className="rule-table-body" style={{display: rules.length > 0 ? 'block' : 'none'}}>
       {rules.map((rule, index) => {
-        return <Rule rule={rule} index={index} classtr={classtr} rulesLength={rules.length}/>
+        return <Rule rule={rule} index={index} classtr={classtr} rulesLength={rules.length} key={index}/>
       })}
     </div>
   </div> )

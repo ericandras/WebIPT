@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useCallback } from "react"
 import { useState, useEffect } from "react";
 import { useSocket } from "../../contexts/SocketContext/socketContext";
 import ChangeTableButton from "../ChainButtons";
@@ -29,6 +29,30 @@ export default function SkeletonTable({title, chainOptions} : Props) {
 
   const table = `iptables -t ${title.toLowerCase()} -L ${selectedChain.toUpperCase()} -n`;
 
+  function compareArrays(arr1:string[], arr2:string[]) {
+    return arr1.length === arr2.length && arr1.every((valor, index) => valor === arr2[index]);
+  } 
+
+  const extractRules = (lines:string[]) =>
+    lines.filter((line) => !line.startsWith("Chain") && !line.startsWith("target"));
+
+
+  const updateRules = useCallback((res: { table: string, chain: string, lines: string[] }) => {
+    if (res.table === title.toLowerCase() && res.chain === selectedChain.toUpperCase()) {
+      const filteredRules = extractRules(res.lines);
+      if (!compareArrays(filteredRules, rules)) {
+        setRules(filteredRules);
+      }
+    }
+  }, [rules, title, selectedChain, setRules]);
+
+  useEffect(() => {
+    socket.on('update_rules', updateRules);
+    return () => {
+      socket.off('update_rules', updateRules);
+    };
+  }, [updateRules]);
+
   useEffect(() => {
     emitMessage(table);
     setTable(title.toLowerCase())
@@ -46,17 +70,6 @@ export default function SkeletonTable({title, chainOptions} : Props) {
   }, [socket, table]);
 
 
-  socket.on('update_rules', (res:{table:string, chain: string, lines: string[]}) => {
-    if(res.table == title.toLowerCase() && res.chain == selectedChain.toUpperCase()) {
-      console.log('receive updated_rules')
-      const filteredRules = extractRules(res.lines);
-      setRules(filteredRules);
-    }
-  })
-
-
-  const extractRules = (lines:string[]) =>
-    lines.filter((line) => !line.startsWith("Chain") && !line.startsWith("target"));
 
    return (
       <section className="main-info">

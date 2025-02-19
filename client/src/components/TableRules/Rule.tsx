@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTable } from "../../contexts/TableContext";
 import { useSocket } from "../../contexts/SocketContext/socketContext";
 
@@ -20,6 +20,10 @@ export default function ({rule, classtr, index, rulesLength}: Props) {
     setEditing(!editing)
   }
 
+  useEffect(() => {
+    setEditing(false)
+  }, [rule, index, classtr, rulesLength])
+
   const handleUp = () => {
     console.log('table:', table, 'chain:',chain)
    const o = `iptables -t ${table} -S ${chain} | sed -n '${index + 2}p' | sed -E 's/^-A ${chain}/-I ${chain} ${index}/' | xargs iptables -t ${table}`
@@ -31,11 +35,11 @@ export default function ({rule, classtr, index, rulesLength}: Props) {
 
   const handleDown = () => {
     console.log('table:', table, 'chain:',chain)
-   const o = `iptables -t ${table} -S ${chain} | sed -n '${index + 2}p' | sed -E 's/^-A ${chain}/-I ${chain} ${index+2}/' | xargs iptables -t ${table}`
-   const removeRUle = `iptables -t ${table} -D ${chain} ${index+1}`
+   const o = `regra=$(iptables -t ${table} -S ${chain} | sed -n '${index + 2}p' | sed -E 's/^-A ${chain}/-I ${chain} ${index+2}/') && iptables -t ${table} -D ${chain} ${index} &&  echo "$regra" | xargs iptables -t ${table}`
+  //  const removeRUle = ``
    console.log('o')
    emitMessage(o)
-   emitMessage(removeRUle)
+  //  emitMessage(removeRUle)
   }
 
   const handleRemove = () => {
