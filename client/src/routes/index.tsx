@@ -1,4 +1,5 @@
 import Filter from "../pages/Filter";
+import Home from "../pages/Home";
 import Mangle from "../pages/Mangle";
 import Nat from "../pages/Nat";
 import Raw from "../pages/Raw";
@@ -20,7 +21,7 @@ function Routes() {
       case 'Filter':
         return <Filter/>;
       default:
-        return <p>escolha uma opção</p>;
+        return <Home />;
     }
   };
 
