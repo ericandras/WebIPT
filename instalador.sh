@@ -123,17 +123,17 @@ criar_servico_iptables() {
     fi
 
     # Garante que o diretório do iptables existe
-    sudo mkdir -p /etc/iptables
+    mkdir -p /etc/iptables
 
     # Cria um arquivo de regras padrão, se não existir
     if [ ! -f "$RULES_FILE" ]; then
         echo "Criando um arquivo de regras padrão em $RULES_FILE..."
-        sudo iptables-save | sudo tee "$RULES_FILE" > /dev/null
+        iptables-save | tee "$RULES_FILE" > /dev/null
     fi
 
     # Cria o serviço systemd
     echo "Criando o serviço systemd para restaurar as regras do iptables..."
-    sudo tee "$SERVICE_PATH" > /dev/null <<EOF
+    tee "$SERVICE_PATH" > /dev/null <<EOF
 [Unit]
 Description=Restaurar regras do iptables no boot
 After=network.target
@@ -148,9 +148,9 @@ WantedBy=multi-user.target
 EOF
 
     # Recarrega o systemd, ativa e inicia o serviço
-    sudo systemctl daemon-reload
-    sudo systemctl enable "$SERVICE_NAME"
-    sudo systemctl start "$SERVICE_NAME"
+    systemctl daemon-reload
+    systemctl enable "$SERVICE_NAME"
+    systemctl start "$SERVICE_NAME"
 
     echo "✅ Serviço systemd '$SERVICE_NAME' criado e ativado com sucesso!"
 }
