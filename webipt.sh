@@ -42,7 +42,7 @@ reconfigure() {
 
     # Cria (ou sobrescreve) o arquivo .env com a variável IP
 
-    read -p "Escreva o ip permitido para acessar o serviço" allowed_ip
+    read -p "Escreva o ip permitido para acessar o serviço: " allowed_ip
 
     script_dir="$(cd "$(dirname "$0")" && pwd)"
     (
