@@ -26,16 +26,16 @@ export default function ({rule, classtr, index, rulesLength}: Props) {
 
   const handleUp = () => {
     console.log('table:', table, 'chain:',chain)
-   const o = `iptables -t ${table} -S ${chain} | sed -n '${index + 2}p' | sed -E 's/^-A ${chain}/-I ${chain} ${index}/' | xargs iptables -t ${table}`
-   const removeRUle = `iptables -t ${table} -D ${chain} ${index+1}`
-   console.log('o')
+   const o = `iptables -t ${table} -S ${chain} | sed -n '${index + 2}p' | sed -E 's/^-A ${chain}/-I ${chain} ${index}/' | xargs iptables -t ${table} && sleep 0.2 && iptables -t ${table} -D ${chain} ${index+2}`
+  //  const removeRUle = ``
+  //  console.log('o')
    emitMessage(o)
-   emitMessage(removeRUle)
+  //  emitMessage(removeRUle)
   }
 
   const handleDown = () => {
-    console.log('table:', table, 'chain:',chain)
-   const o = `regra=$(iptables -t ${table} -S ${chain} | sed -n '${index + 2}p' | sed -E 's/^-A ${chain}/-I ${chain} ${index+2}/') && iptables -t ${table} -D ${chain} ${index} &&  echo "$regra" | xargs iptables -t ${table}`
+   console.log('table:', table, 'chain:',chain)
+   const o = `regra=$(iptables -t ${table} -S ${chain} | sed -n '${index + 2}p' | sed -E 's/^-A ${chain}/-I ${chain} ${index+2}/') && sleep 0.2 && iptables -t ${table} -D ${chain} ${index+1} &&  echo "$regra" | xargs iptables -t ${table}`
   //  const removeRUle = ``
    console.log('o')
    emitMessage(o)
