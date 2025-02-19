@@ -111,6 +111,54 @@ fi
 
 echo "${GREEN}Instalação concluída com sucesso!${RESET}"
 
+criar_servico_iptables() {
+    local SERVICE_NAME="iptables-restore.service"
+    local RULES_FILE="/etc/iptables/regras.txt"
+    local SERVICE_PATH="/etc/systemd/system/$SERVICE_NAME"
+
+    # Verifica se o systemd está presente
+    if ! command -v systemctl &> /dev/null; then
+        echo "Erro: systemd não encontrado. Este script requer um sistema com systemd."
+        return 1
+    fi
+
+    # Garante que o diretório do iptables existe
+    sudo mkdir -p /etc/iptables
+
+    # Cria um arquivo de regras padrão, se não existir
+    if [ ! -f "$RULES_FILE" ]; then
+        echo "Criando um arquivo de regras padrão em $RULES_FILE..."
+        sudo iptables-save | sudo tee "$RULES_FILE" > /dev/null
+    fi
+
+    # Cria o serviço systemd
+    echo "Criando o serviço systemd para restaurar as regras do iptables..."
+    sudo tee "$SERVICE_PATH" > /dev/null <<EOF
+[Unit]
+Description=Restaurar regras do iptables no boot
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/iptables-restore < $RULES_FILE
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+    # Recarrega o systemd, ativa e inicia o serviço
+    sudo systemctl daemon-reload
+    sudo systemctl enable "$SERVICE_NAME"
+    sudo systemctl start "$SERVICE_NAME"
+
+    echo "✅ Serviço systemd '$SERVICE_NAME' criado e ativado com sucesso!"
+}
+
+# Chamada da função para executar a configuração
+criar_servico_iptables
+
+
 script_dir="$(cd "$(dirname "$0")" && pwd)"
 echo "alias webipt=\"$script_dir/webipt.sh\"" >> ~/.profile
 if [ -n "$BASH_VERSION" ]; then
