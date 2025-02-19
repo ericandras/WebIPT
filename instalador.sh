@@ -140,7 +140,7 @@ After=network.target
 
 [Service]
 Type=oneshot
-ExecStart=/sbin/iptables-restore < $RULES_FILE
+ExecStart= iptables-restore < $RULES_FILE
 RemainAfterExit=yes
 
 [Install]
