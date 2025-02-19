@@ -85,8 +85,7 @@ const optionsFieldLiteral = [
 },
 {
   command: '--to-source', 
-  type: 'select/text',
-  options: [{value:'10.12.1.10'}], // trocar para apenas text depois
+  type: 'text',
   placeholder: '203.0.113.1',
   title: 'IP substituido',
   info: 'Usado com o target SNAT para especificar o IP de origem que será substituído.',
