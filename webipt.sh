@@ -178,10 +178,9 @@ stop() {
           # Se o formato for "nome: PID", extraímos:
           process=$(echo "$line" | cut -d: -f1)
           pid=$(echo "$line" | cut -d: -f2 | tr -d ' ')
-          kill "$pid"
+          pkill -P "$pid"
           if [ ! $? -eq 0 ]; then
               echo "Falha ao interromper o processo '$process'."
-              exit 1
           fi
       done < "$PID_FILE"
       # Remove o arquivo de PIDs após interromper os processos
