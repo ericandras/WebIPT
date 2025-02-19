@@ -46,10 +46,70 @@ button.save-button {
 .render-rule-itens-container{
   height: 100%;
   width: 100%;
-  overflow: auto;
+  overflow-y: auto;
 }
 
 /* .save-button {
   z-index: 1;
 } */
 
+.rule-item-form {
+  display: flex;
+      flex-direction: row;
+      justify-content: center;
+}
+
+/* CloudInfo */
+
+.tooltip-container {
+  position: relative;         /* Necessário para posicionar o balão */
+  display: inline-block;      /* Mantém a div no fluxo do texto */
+  cursor: pointer;            /* Aparece como link/ponteiro */        /* Visual simples da div */
+  width: 25px;
+  height: 25px;
+  background-image: url('../../assets/info-icon.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  margin-bottom: 27px;
+  margin-left: 10px;
+  margin-top: 18px
+}
+
+/* Balão que será exibido */
+.tooltip-text {
+  visibility: hidden;         /* Começa oculto */
+  background-color: #555;     /* Fundo do balão */
+  color: #fff;                /* Cor do texto */
+  text-align: center;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  
+  /* Posição absoluta para “flutuar” à direita */
+  position: absolute;
+  right: 100%;                 /* Fica à direita do container */
+  top: 50%;                   /* Centraliza verticalmente */
+  transform: translateY(-50%);
+  margin-left: 8px;           /* Espaço entre a div e o balão */
+  
+  white-space: nowrap;        /* Não quebrar linha no balão */
+  z-index: 999;               /* Ficar acima de outros elementos */
+}
+
+/* Pequena setinha no balão, à esquerda do tooltip */
+.tooltip-text::before {
+  content: "";
+  position: absolute;
+  right: 100%;                /* Fica “antes” do balão, à esquerda */
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent #555 transparent transparent;
+  /* A seta é um triângulo, usando bordas */
+}
+
+/* Ao passar o mouse na div, o balão fica visível */
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+}

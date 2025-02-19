@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ChainKey, ChainOptions, FormItem, OptionField } from "../../interfaces/chain";
 import Dropdown from "../Dropdown"
 import { useSocket } from "../../contexts/SocketContext/socketContext";
@@ -96,7 +96,7 @@ const handleSave = () => {
 };
 
 
-const handleDropdownChange = (index:number, command: string, value:string) => {
+const handleDropdownChange = useCallback((index:number, command: string, value:string) => {
  
 
   let updatedRule = [...newRule];
@@ -107,8 +107,8 @@ const handleDropdownChange = (index:number, command: string, value:string) => {
   setNewRule(updatedRule);
 
   setTextRule(makeCommand(updatedRule))
-  console.log( makeCommand(updatedRule))
-};
+  console.log( makeCommand(updatedRule), index)
+}, [newRule]);
 
  return <>
   <h2 className="title-add-rule">Adicionar Nova Regra <span>{selectedChain}</span></h2>
