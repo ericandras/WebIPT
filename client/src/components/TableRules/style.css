@@ -156,7 +156,7 @@
     border-style: solid;
     border-color: var(--primary-bd-color);
     width: 100%;
-    overflow-x: scroll;
+    overflow-x: auto;
     /* padding-right: 4vw; */
   }
 
