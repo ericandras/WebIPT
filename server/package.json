@@ -6,7 +6,7 @@
   "author": "Manoel, Eric, Caracoci",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node index.js"
   },
   "type": "module",
   "dependencies": {
