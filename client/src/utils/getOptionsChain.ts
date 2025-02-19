@@ -2,7 +2,8 @@ import { OptionField } from "../interfaces/chain";
 
 const interfaceOptions: { value: string }[] = [
   { value: 'enp0s3' },
-  { value: 'enp0s8' }
+  { value: 'enp0s8' },
+  { value: 'eth0'}
 ];
 const protocolOptions: { value: string }[] = [
   { value: 'tcp' },
