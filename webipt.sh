@@ -169,32 +169,58 @@ start() {
 }
 
 stop() {
-  script_dir="$(cd "$(dirname "$0")" && pwd)"
-  PID_FILE="$script_dir/.yarn_pids.pid"
+    script_dir="$(cd "$(dirname "$0")" && pwd)"
+    PID_FILE="$script_dir/.yarn_pids.pid"
 
-  if [ -f "$PID_FILE" ]; then
-      while IFS= read -r line; do
-          process=$(echo "$line" | cut -d: -f1)
-          pid=$(echo "$line" | cut -d: -f2 | tr -d ' ')
+    # Se o arquivo de PIDs não existe, sai imediatamente
+    if [ ! -f "$PID_FILE" ]; then
+        echo "Nenhum processo encontrado para interromper."
+        return 0
+    fi
 
-          # Mata os filhos primeiro
-          pkill -P "$pid" 2>/dev/null || echo "⚠️ Falha ao matar processos filhos de '$process'. Continuando..."
+    echo "Parando processos listados em $PID_FILE..."
 
-          # Mata o processo pai
-          kill "$pid" 2>/dev/null || echo "⚠️ Falha ao interromper '$process' (PID: $pid). Continuando..."
-          
-      done < "$PID_FILE"
+    # Variável para indicar se pelo menos um processo foi encerrado
+    processos_finalizados=false
 
-      # Aguarda um tempo para garantir que os processos foram finalizados
-      sleep 0.5
+    while IFS= read -r line; do
+        process=$(echo "$line" | cut -d: -f1)
+        pid=$(echo "$line" | cut -d: -f2 | tr -d ' ')
 
-      # Remove o arquivo de PIDs APÓS tentar matar todos os processos
-      rm -f "$PID_FILE"
-      echo "✅ Arquivo de PIDs removido: $PID_FILE"
-  else
-      echo "ℹ️ Nenhum processo encontrado para interromper."
-  fi
+        # Verifica se o processo ainda existe antes de tentar matá-lo
+        if ps -p "$pid" > /dev/null 2>&1; then
+            processos_finalizados=true
+            echo "Interrompendo '$process' (PID: $pid)..."
+
+            # Mata os processos filhos primeiro
+            pkill -P "$pid" 2>/dev/null && echo "Filhos de '$process' encerrados."
+
+            # Mata o processo pai com SIGTERM (modo seguro)
+            kill "$pid" 2>/dev/null && echo "Processo '$process' encerrado."
+
+            # Verifica se o processo ainda está rodando e força encerramento com SIGKILL
+            sleep 0.2
+            if ps -p "$pid" > /dev/null 2>&1; then
+                echo "Processo '$process' (PID: $pid) ainda está rodando. Forçando encerramento..."
+                kill -9 "$pid" 2>/dev/null && echo "Processo '$process' encerrado à força."
+            fi
+        else
+            echo "Processo '$process' (PID: $pid) já não está rodando."
+        fi
+    done < "$PID_FILE"
+
+    # Aguarda um pouco para garantir que os processos foram finalizados
+    sleep 0.5
+
+    # Remove o arquivo de PIDs APENAS se algum processo foi finalizado
+    if [ "$processos_finalizados" = true ] || [ -f "$PID_FILE" ]; then
+        rm -f "$PID_FILE"
+        echo "Arquivo de PIDs removido: $PID_FILE"
+    fi
 }
+
+
+
 
 
 show_help() {
