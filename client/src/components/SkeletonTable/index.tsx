@@ -38,12 +38,22 @@ export default function SkeletonTable({title, chainOptions} : Props) {
       setRules(filteredRules);
     });
 
+    socket.emit('define_table', {table: title.toLowerCase(), chain: selectedChain.toUpperCase()})
+
     return () => {
       socket.off("output_command");
     };
-
-    
   }, [socket, table]);
+
+
+  socket.on('update_rules', (res:{table:string, chain: string, lines: string[]}) => {
+    if(res.table == title.toLowerCase() && res.chain == selectedChain.toUpperCase()) {
+      console.log('receive updated_rules')
+      const filteredRules = extractRules(res.lines);
+      setRules(filteredRules);
+    }
+  })
+
 
   const extractRules = (lines:string[]) =>
     lines.filter((line) => !line.startsWith("Chain") && !line.startsWith("target"));

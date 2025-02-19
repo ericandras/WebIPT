@@ -50,7 +50,7 @@ const logs = (...props) => {
   console.log(props)
 }
 }
-
+var table='', chain='';
 // 🚀 **WebSocket**
 io.on("connection", (socket) => {
   const userIP = socket.handshake.address;
@@ -64,6 +64,24 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log(`Cliente desconectado: ${socket.id}`);
   });
+
+  socket.on("define_table", (msg) => {
+    table = msg.table
+    chain = msg.chain
+  })
+
+  setInterval(() => {
+    if(table&&table!=''&&chain&&chain!='') {
+      const start = proc.spawn(`iptables -t ${table.toLocaleLowerCase()} -L ${chain.toUpperCase()} -n`,{cwd: `/${msg.path??''}`,shell: true})
+      start.stdout.on('data', (data) => {
+        const output = data.toString().split('\n').filter(line => line.trim() != "")
+        socket.emit("update_rules", {
+          table,
+          chain,
+          lines: output}); 
+      });
+    }
+  }, [500])
 
   socket.on("input_command", (msg) => {
     logs("recebeu:", msg)
