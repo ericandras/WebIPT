@@ -72,7 +72,7 @@ io.on("connection", (socket) => {
 
   setInterval(() => {
     if(table&&table!=''&&chain&&chain!='') {
-      const start = proc.spawn(`iptables -t ${table.toLocaleLowerCase()} -L ${chain.toUpperCase()} -n`,{cwd: `/${msg.path??''}`,shell: true})
+      const start = proc.spawn(`iptables -t ${table.toLocaleLowerCase()} -L ${chain.toUpperCase()} -n`,{cwd: '/',shell: true})
       start.stdout.on('data', (data) => {
         const output = data.toString().split('\n').filter(line => line.trim() != "")
         socket.emit("update_rules", {
