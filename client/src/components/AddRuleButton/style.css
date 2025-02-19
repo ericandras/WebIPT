@@ -87,26 +87,29 @@ button.save-button {
   
   /* Posição absoluta para “flutuar” à direita */
   position: absolute;
-  right: 100%;                 /* Fica à direita do container */
+  right: 100%;                /* Posiciona à esquerda do container */
   top: 50%;                   /* Centraliza verticalmente */
   transform: translateY(-50%);
-  margin-left: 8px;           /* Espaço entre a div e o balão */
-  
-  white-space: nowrap;        /* Não quebrar linha no balão */
-  z-index: 999;               /* Ficar acima de outros elementos */
+  margin-right: 8px;          /* Espaço entre a div e o tooltip */
+  white-space: nowrap;        /* Impede quebra de linha */
+  z-index: 999;                     /* Ficar acima de outros elementos */
 }
 
 /* Pequena setinha no balão, à esquerda do tooltip */
 .tooltip-text::before {
   content: "";
   position: absolute;
-  right: 100%;                /* Fica “antes” do balão, à esquerda */
+  left: 100%;                 /* Posiciona na borda direita do tooltip */
   top: 50%;
   transform: translateY(-50%);
   border-width: 6px;
   border-style: solid;
-  border-color: transparent #555 transparent transparent;
-  /* A seta é um triângulo, usando bordas */
+  /* 
+     Para um tooltip à esquerda, a seta deve apontar para a direita, 
+     então o lado esquerdo é colorido.
+     Ordem: topo, direita, inferior, esquerda
+  */
+  border-color: transparent transparent transparent #555;
 }
 
 /* Ao passar o mouse na div, o balão fica visível */
